@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Qazaqsha — учи казахский</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=Golos+Text:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2ECDC;
+    --paper:#FFFEFA;
+    --ink:#16302E;
+    --ink-soft:#4B615E;
+    --line:#E1D7BE;
+
+    --sky:#1CA7C4;
+    --sky-deep:#0E6E86;
+    --gold:#EFA90C;
+    --gold-deep:#B87F06;
+
+    --a1:#1CA7C4;
+    --a1-deep:#0E6E86;
+    --a2:#4C8C3E;
+    --a2-deep:#33632A;
+    --b1:#D98A1F;
+    --b1-deep:#A5670F;
+    --b2:#A6444C;
+    --b2-deep:#7C2F35;
+
+    --good:#2E8B4E;
+    --good-bg:#E4F3E7;
+    --bad:#C4453F;
+    --bad-bg:#FBE7E5;
+
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:9px;
+    --shadow:0 2px 0 rgba(22,48,46,.08), 0 10px 24px -14px rgba(22,48,46,.35);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#122224;
+      --paper:#173032;
+      --ink:#F2ECDC;
+      --ink-soft:#A9C2BE;
+      --line:#264543;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#122224;
+    --paper:#173032;
+    --ink:#F2ECDC;
+    --ink-soft:#A9C2BE;
+    --line:#264543;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Golos Text', 'Noto Sans', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{ font-family:'PT Serif','Noto Serif', serif; }
+
+  .app{
+    max-width:560px;
+    margin:0 auto;
+    min-height:100vh;
+    background:var(--bg);
+    position:relative;
+    padding-bottom:28px;
+  }
+
+  /* ---------- ornament ---------- */
+  .horizon{
+    position:relative;
+    background:linear-gradient(160deg, var(--sky) 0%, var(--sky-deep) 100%);
+    color:#fff;
+    padding:30px 22px 46px;
+    overflow:hidden;
+  }
+  .horizon svg.motif{
+    position:absolute; inset:0; width:100%; height:100%;
+    opacity:.16; pointer-events:none;
+  }
+  .horizon-top{
+    display:flex; align-items:center; justify-content:space-between;
+    position:relative; z-index:1;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand-mark{
+    width:36px;height:36px;border-radius:10px;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--sky-deep); font-weight:900; font-size:18px;
+    flex:none;
+  }
+  .brand-name{font-weight:700; font-size:17px; letter-spacing:.2px;}
+  .stat-pill{
+    display:flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,.16);
+    padding:6px 11px; border-radius:999px;
+    font-weight:700; font-size:13.5px;
+  }
+  .stats-row{display:flex; gap:8px;}
+  .hero-title{
+    position:relative; z-index:1;
+    font-size:26px; line-height:1.25; margin:26px 0 6px; max-width:20ch;
+  }
+  .hero-sub{
+    position:relative; z-index:1;
+    font-size:14.5px; opacity:.92; max-width:34ch; margin:0;
+  }
+
+  .wave{
+    position:absolute; left:0; right:0; bottom:-1px; height:34px;
+    background:var(--bg);
+    clip-path:polygon(0 100%,0 40%,4% 30%,8% 40%,12% 22%,16% 40%,20% 30%,24% 42%,28% 24%,32% 42%,36% 30%,40% 42%,44% 26%,48% 42%,52% 30%,56% 42%,60% 24%,64% 42%,68% 30%,72% 40%,76% 22%,80% 40%,84% 30%,88% 40%,92% 24%,96% 40%,100% 30%,100% 100%);
+  }
+
+  /* ---------- section ---------- */
+  .section{ padding:22px 20px 4px; }
+  .section-title{ font-size:15px; font-weight:700; color:var(--ink-soft); margin:0 0 12px; text-transform:none; }
+
+  /* ---------- level path ---------- */
+  .path{ display:flex; flex-direction:column; gap:0; padding:4px 4px 8px; }
+  .level-node{
+    display:flex; gap:14px; align-items:stretch;
+    position:relative;
+    padding:6px 2px;
+  }
+  .level-node .stem{
+    width:2px; flex:none;
+    background:var(--line);
+    margin-left:29px;
+  }
+  .level-node:first-child .stem-top{visibility:hidden;}
+  .level-node:last-child .stem-bottom{visibility:hidden;}
+  .node-col{ display:flex; flex-direction:column; align-items:center; flex:none; }
+  .stem-seg{ width:2px; flex:1; background:var(--line); min-height:10px; }
+  .badge{
+    width:60px;height:60px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff; font-family:'PT Serif',serif; font-weight:700; font-size:19px;
+    box-shadow:var(--shadow);
+    border:3px solid var(--paper);
+    flex:none;
+    cursor:pointer;
+    transition:transform .15s ease;
+  }
+  .badge:active{ transform:scale(.94); }
+  .level-card{
+    flex:1;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:13px 15px;
+    margin:2px 0 14px;
+    cursor:pointer;
+    display:flex; flex-direction:column; gap:3px;
+  }
+  .level-card .lv-name{ font-weight:700; font-size:15.5px; }
+  .level-card .lv-sub{ font-size:12.5px; color:var(--ink-soft); }
+  .lv-progress{
+    margin-top:6px; height:6px; border-radius:4px; background:var(--line); overflow:hidden;
+  }
+  .lv-progress > div{ height:100%; border-radius:4px; }
+
+  /* ---------- unit list ---------- */
+  .unit-card{
+    display:flex; align-items:center; gap:13px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:14px 15px;
+    margin-bottom:10px;
+    cursor:pointer;
+  }
+  .unit-icon{
+    width:44px;height:44px;border-radius:12px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--bg); color:var(--sky-deep);
+  }
+  .unit-icon svg{ width:22px; height:22px; }
+  .unit-title{ font-weight:700; font-size:14.5px; }
+  .unit-meta{ font-size:12px; color:var(--ink-soft); margin-top:2px; }
+  .unit-check{
+    margin-left:auto; width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;flex:none;
+    background:var(--good-bg); color:var(--good);
+  }
+  .back-row{
+    display:flex; align-items:center; gap:10px; padding:18px 20px 6px;
+  }
+  .icon-btn{
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--line); background:var(--paper);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    color:var(--ink); flex:none;
+  }
+  .level-head-title{ font-weight:700; font-size:18px; }
+  .level-head-sub{ font-size:13px; color:var(--ink-soft); }
+
+  /* ---------- exercise screen ---------- */
+  .ex-top{
+    display:flex; align-items:center; gap:12px; padding:16px 18px 4px;
+  }
+  .ex-progress{
+    flex:1; height:10px; border-radius:6px; background:var(--line); overflow:hidden;
+  }
+  .ex-progress > div{ height:100%; background:var(--sky); border-radius:6px; transition:width .25s ease; }
+  .hearts{ display:flex; gap:3px; align-items:center; flex:none; }
+  .hearts svg{ width:19px; height:19px; }
+
+  /* explicit icon sizing everywhere an inline SVG is used without its own width/height attrs */
+  .icon-btn svg{ width:18px; height:18px; }
+  .unit-check svg{ width:14px; height:14px; }
+  .feedback-row svg{ width:20px; height:20px; flex:none; }
+  .result-badge svg{ width:46px; height:46px; }
+  .mic-btn svg{ width:30px; height:30px; }
+  .small-btn svg{ width:13px; height:13px; vertical-align:-2px; margin-right:3px; }
+
+  .ex-wrap{ padding:22px 20px 120px; }
+  .skill-tag{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:11.5px; font-weight:700; letter-spacing:.3px;
+    color:var(--sky-deep); background:rgba(28,167,196,.12);
+    padding:5px 10px; border-radius:999px; margin-bottom:14px;
+  }
+  .ex-prompt{ font-size:20px; font-weight:700; line-height:1.4; margin:0 0 4px; }
+  .ex-caption{ font-size:13.5px; color:var(--ink-soft); margin:0 0 20px; }
+
+  .sentence-box{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:18px 18px; font-size:19px; line-height:1.6; margin-bottom:22px;
+  }
+  .blank{
+    display:inline-block; min-width:64px; border-bottom:3px solid var(--sky);
+    text-align:center; font-weight:700; color:var(--sky-deep);
+  }
+
+  .options{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    text-align:left;
+    padding:14px 16px;
+    border-radius:var(--radius-md);
+    border:2px solid var(--line);
+    background:var(--paper);
+    font-size:15.5px; font-weight:600; color:var(--ink);
+    cursor:pointer;
+  }
+  .opt:active{ transform:translateY(1px); }
+  .opt.selected{ border-color:var(--sky); background:rgba(28,167,196,.08); }
+  .opt.correct{ border-color:var(--good); background:var(--good-bg); color:var(--good); }
+  .opt.wrong{ border-color:var(--bad); background:var(--bad-bg); color:var(--bad); }
+  .opt:disabled{ cursor:default; }
+
+  /* ---------- mascot (listening exercises) ---------- */
+  .mascot-wrap{ display:flex; flex-direction:column; align-items:center; margin-bottom:18px; }
+  .mascot-svg{ width:104px; height:104px; overflow:visible; animation:mc-bob 2.6s ease-in-out infinite; }
+  @keyframes mc-bob{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(-5px) rotate(-1.5deg); } }
+  .mc-band{ fill:var(--gold); }
+  .mc-band-dot{ fill:var(--b2); }
+  .mc-pupil{ fill:var(--ink); }
+  .mc-cheek{ fill:#E7A6A6; opacity:.45; }
+  .mc-line{ stroke:var(--ink); stroke-width:4; fill:none; stroke-linecap:round; }
+  .mc-line.thin{ stroke-width:3; }
+  .mc-brow{ stroke:#241813; stroke-width:3; fill:none; stroke-linecap:round; }
+  .mc-nose{ stroke:#C98E58; stroke-width:2.4; fill:none; stroke-linecap:round; opacity:.7; }
+  .mc-collar-seam{ stroke:#0A5468; stroke-width:2; fill:none; opacity:.55; }
+  .mc-collar-trim{ stroke:var(--gold); stroke-width:2; fill:none; stroke-dasharray:1 4; stroke-linecap:round; opacity:.9; }
+  .mc-mouth-closed{ stroke:var(--ink); stroke-width:3.5; fill:none; stroke-linecap:round; }
+  .mc-mouth-open{ fill:var(--b2-deep); opacity:0; }
+  .arm-l, .arm-r{ transform-box:fill-box; }
+  .arm-l{ transform-origin:95% 15%; }
+  .arm-r{ transform-origin:5% 15%; }
+  .eyes-happy, .eyes-sad{ opacity:0; }
+  .mascot-wrap.happy .eyes-normal{ opacity:0; }
+  .mascot-wrap.happy .eyes-happy{ opacity:1; }
+  .mascot-wrap.happy .mascot-svg{ animation:mc-happy .6s ease; }
+  @keyframes mc-happy{ 0%{transform:translateY(0) scale(1);} 30%{transform:translateY(-16px) scale(1.08);} 60%{transform:translateY(2px) scale(.97);} 100%{transform:translateY(0) scale(1);} }
+  .mascot-wrap.sad .eyes-normal{ opacity:0; }
+  .mascot-wrap.sad .eyes-sad{ opacity:1; }
+  .mascot-wrap.sad .mascot-svg{ animation:mc-sad .5s ease; }
+  @keyframes mc-sad{ 0%,100%{transform:rotate(0);} 25%{transform:rotate(-4deg) translateX(-3px);} 75%{transform:rotate(4deg) translateX(3px);} }
+  .mascot-wrap.talking .arm-l{ animation:mc-flap-l .4s ease-in-out infinite; }
+  .mascot-wrap.talking .arm-r{ animation:mc-flap-r .4s ease-in-out infinite; }
+  @keyframes mc-flap-l{ 0%,100%{transform:rotate(0);} 50%{transform:rotate(-12deg);} }
+  @keyframes mc-flap-r{ 0%,100%{transform:rotate(0);} 50%{transform:rotate(12deg);} }
+  .mascot-wrap.talking .mc-mouth-closed{ opacity:0; }
+  .mascot-wrap.talking .mc-mouth-open{ animation:mc-talk .28s ease-in-out infinite; }
+  @keyframes mc-talk{ 0%,100%{ opacity:1; transform:scaleY(.5); } 50%{ opacity:1; transform:scaleY(1); } }
+  .soundwave{ opacity:0; transition:opacity .15s ease; transform-box:fill-box; transform-origin:center; }
+  .mascot-wrap.talking .soundwave{ opacity:1; }
+  .soundwave rect{ animation:mc-wave .5s ease-in-out infinite; transform-box:fill-box; transform-origin:center; fill:var(--sky-deep); }
+  .soundwave rect:nth-child(2){ animation-delay:.12s; }
+  .soundwave rect:nth-child(3){ animation-delay:.24s; }
+  @keyframes mc-wave{ 0%,100%{transform:scaleY(.4);} 50%{transform:scaleY(1);} }
+  .mascot-bubble{ font-size:12.5px; font-weight:700; color:var(--sky-deep); margin-top:8px; min-height:16px; text-align:center; }
+
+  .listen-btn{
+    width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
+    padding:22px; border-radius:var(--radius-md);
+    background:var(--sky); color:#fff; border:none;
+    font-weight:700; font-size:15px; margin-bottom:22px; cursor:pointer;
+  }
+  .listen-btn svg{ width:24px; height:24px; }
+
+  .text-input{
+    width:100%; padding:15px 16px; font-size:16px;
+    border-radius:var(--radius-md); border:2px solid var(--line);
+    background:var(--paper); color:var(--ink); font-family:inherit;
+    margin-bottom:16px;
+  }
+  .text-input:focus{ outline:none; border-color:var(--sky); }
+
+  .speak-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:26px 20px; text-align:center; margin-bottom:18px;
+  }
+  .speak-target{ font-size:22px; font-weight:700; margin:0 0 6px; }
+  .speak-hint{ font-size:13.5px; color:var(--ink-soft); margin:0 0 20px; }
+  .mic-btn{
+    width:78px;height:78px;border-radius:50%; border:none;
+    background:var(--gold); color:var(--ink); display:flex; align-items:center; justify-content:center;
+    margin:0 auto 12px; cursor:pointer; box-shadow:var(--shadow);
+  }
+  .mic-btn.listening{ background:var(--bad); color:#fff; animation:pulse 1.1s infinite; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(196,69,63,.4);} 70%{box-shadow:0 0 0 14px rgba(196,69,63,0);} 100%{box-shadow:0 0 0 0 rgba(196,69,63,0);} }
+  .speak-status{ font-size:13px; color:var(--ink-soft); min-height:18px; }
+  .acc-row{ display:flex; align-items:center; gap:10px; margin:10px auto 4px; max-width:260px; }
+  .acc-track{ flex:1; height:8px; border-radius:5px; background:var(--line); overflow:hidden; }
+  .acc-fill{ height:100%; border-radius:5px; transition:width .3s ease; }
+  .acc-num{ font-size:13px; font-weight:700; min-width:36px; text-align:right; }
+  .small-btn{
+    display:inline-block; margin-top:6px; padding:9px 16px; border-radius:999px;
+    border:1px solid var(--line); background:var(--paper); font-size:13px; font-weight:600;
+    cursor:pointer; color:var(--ink);
+  }
+
+  .footer-bar{
+    position:fixed; left:0; right:0; bottom:0;
+    background:var(--paper); border-top:1px solid var(--line);
+    padding:14px 20px calc(14px + env(safe-area-inset-bottom));
+    max-width:560px; margin:0 auto;
+  }
+  .footer-bar.state-good{ background:var(--good-bg); border-top-color:var(--good); }
+  .footer-bar.state-bad{ background:var(--bad-bg); border-top-color:var(--bad); }
+  .feedback-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-weight:700; }
+  .feedback-row.good{ color:var(--good); }
+  .feedback-row.bad{ color:var(--bad); }
+  .feedback-note{ font-size:13px; font-weight:500; color:var(--ink-soft); margin:-4px 0 10px 30px; }
+  .btn{
+    width:100%; padding:15px; border-radius:var(--radius-md); border:none;
+    font-weight:700; font-size:15.5px; cursor:pointer;
+    background:var(--line); color:var(--ink-soft);
+  }
+  .btn.primary{ background:var(--sky-deep); color:#fff; }
+  .btn.good{ background:var(--good); color:#fff; }
+  .btn.bad{ background:var(--bad); color:#fff; }
+  .btn:disabled{ opacity:.55; }
+
+  /* ---------- result ---------- */
+  .result-wrap{ padding:40px 26px 30px; text-align:center; }
+  .result-badge{
+    width:96px;height:96px;border-radius:50%; margin:0 auto 18px;
+    background:linear-gradient(160deg, var(--gold), var(--gold-deep));
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    box-shadow:var(--shadow);
+  }
+  .result-title{ font-size:23px; margin:0 0 6px; }
+  .result-sub{ color:var(--ink-soft); font-size:14.5px; margin:0 0 26px; }
+  .result-stats{ display:flex; gap:10px; justify-content:center; margin-bottom:30px; }
+  .stat-box{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:14px 18px; min-width:92px;
+  }
+  .stat-box .num{ font-size:20px; font-weight:700; font-family:'PT Serif',serif; }
+  .stat-box .lbl{ font-size:11.5px; color:var(--ink-soft); margin-top:2px; }
+
+  /* ---------- nav row (home) ---------- */
+  .nav-row{ display:flex; gap:10px; padding:4px 20px 2px; }
+  .nav-btn{
+    flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:13px 10px; font-weight:700; font-size:13.5px; cursor:pointer; color:var(--ink);
+  }
+  .nav-btn svg{ width:18px; height:18px; color:var(--sky-deep); }
+
+  /* ---------- progress / assessment screen ---------- */
+  .mastery-hero{
+    text-align:center; padding:6px 20px 18px;
+  }
+  .mastery-ring{
+    width:132px; height:132px; border-radius:50%; margin:0 auto 12px;
+    display:flex; align-items:center; justify-content:center;
+    background:conic-gradient(var(--sky) calc(var(--pct,0)*1%), var(--line) 0);
+    position:relative;
+  }
+  .mastery-ring::before{
+    content:''; position:absolute; inset:10px; border-radius:50%; background:var(--paper);
+  }
+  .mastery-ring .num{ position:relative; font-family:'PT Serif',serif; font-size:30px; font-weight:700; }
+  .skill-bar-row{ margin-bottom:16px; }
+  .skill-bar-top{ display:flex; justify-content:space-between; font-size:13.5px; font-weight:700; margin-bottom:6px; }
+  .skill-bar-top .pct{ color:var(--ink-soft); font-weight:700; }
+  .skill-bar-track{ height:10px; border-radius:6px; background:var(--line); overflow:hidden; }
+  .skill-bar-fill{ height:100%; border-radius:6px; }
+  .skill-bar-empty{ font-size:12px; color:var(--ink-soft); margin-top:4px; }
+  .info-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:14px 16px; font-size:13px; color:var(--ink-soft); line-height:1.5; margin-top:18px;
+  }
+
+  /* ---------- leaderboard ---------- */
+  .lb-name-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:14px 16px; margin-bottom:16px;
+  }
+  .lb-name-card label{ font-size:12.5px; color:var(--ink-soft); display:block; margin-bottom:8px; }
+  .lb-name-row{ display:flex; gap:8px; }
+  .lb-name-row input{
+    flex:1; padding:11px 13px; border-radius:var(--radius-sm); border:2px solid var(--line);
+    font-family:inherit; font-size:14.5px; background:var(--bg); color:var(--ink);
+  }
+  .lb-name-row button{
+    padding:0 16px; border-radius:var(--radius-sm); border:none; background:var(--sky-deep); color:#fff;
+    font-weight:700; font-size:13.5px; cursor:pointer;
+  }
+  .lb-row{
+    display:flex; align-items:center; gap:12px;
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
+    padding:11px 14px; margin-bottom:8px;
+  }
+  .lb-row.me{ border-color:var(--sky); background:rgba(28,167,196,.08); }
+  .lb-rank{ width:24px; text-align:center; font-weight:700; font-family:'PT Serif',serif; color:var(--ink-soft); flex:none; }
+  .lb-name{ flex:1; font-weight:600; font-size:14px; }
+  .lb-xp{ font-weight:700; font-size:14px; color:var(--gold-deep); flex:none; }
+  .lb-empty{ text-align:center; color:var(--ink-soft); font-size:13.5px; padding:30px 10px; }
+
+  .hidden{ display:none !important; }
+  ::selection{ background:var(--gold); color:#16302E; }
+
+  @media (max-width:380px){
+    .hero-title{ font-size:22px; }
+    .ex-prompt{ font-size:18px; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= DATA ================= */
+  var ICONS = {
+    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C4 4.67 4.67 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z"/><path d="M20 5.5c0-.83-.67-1.5-1.5-1.5H12v16h6.5c.83 0 1.5-.67 1.5-1.5v-13Z"/></svg>',
+    ear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 1 8 8"/><path d="M12 20a4 4 0 0 1-4-4v-1"/><path d="M12 4a6 6 0 0 1 6 6c0 2-1 3-1 5"/></svg>',
+    pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 4.5 5 5L8 21H3v-5Z"/></svg>',
+    mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v4M8 21h8"/></svg>',
+    speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4Z"/><path d="M17 8a6 6 0 0 1 0 8"/><path d="M20 5a10 10 0 0 1 0 14"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.2-4.6-10-9.3C.4 8.1 2 4.5 5.6 4c2-.3 3.8.6 5 2.3C11.8 4.6 13.6 3.7 15.6 4c3.6.5 5.2 4.1 3.6 7.7C19.2 16.4 12 21 12 21Z"/></svg>',
+    heartOutline: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.2-4.6-10-9.3C.4 8.1 2 4.5 5.6 4c2-.3 3.8.6 5 2.3C11.8 4.6 13.6 3.7 15.6 4c3.6.5 5.2 4.1 3.6 7.7C19.2 16.4 12 21 12 21Z"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+    close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+    flame: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c0-1-.3-2-.8-2.8.5.2 3.8 1.9 3.8 6.8a7 7 0 0 1-14 0c0-5 3-7.6 5-11Z"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.6 7.2.9-5.3 5 1.5 7.2L12 18.2 5.5 21.7 7 14.5 1.7 9.5l7.2-.9Z"/></svg>',
+    trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5a3 3 0 0 0 3 5M16 5h3a3 3 0 0 1-3 5"/><path d="M12 13v3M9 20h6M10 17h4v3h-4z"/></svg>'
+  };
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  var LEVELS = [
+    {
+      id:'a1', code:'A1', name:'Негізгі деңгей', sub:'Начальный', color:'a1', colorDeep:'a1-deep',
+      units:[
+        { id:'a1-1', title:'Сәлемдесу және ізет', ru:'Приветствия и вежливость', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'Как по-казахски сказать «Здравствуйте»?', options:['Сәлеметсіз бе','Сау болыңыз','Рахмет','Кешіріңіз'], answer:'Сәлеметсіз бе'},
+            {type:'choice', skill:'vocab', prompt:'Что означает «Рахмет»?', options:['Спасибо','Пожалуйста','Извините','Привет'], answer:'Спасибо'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «Привет»', answer:'сәлем'},
+            {type:'listen', skill:'listening', audioText:'Кешіріңіз', prompt:'Прослушайте и выберите верный перевод', options:['Извините','До свидания','Да','Нет'], answer:'Извините'},
+            {type:'choice', skill:'vocab', prompt:'«Қалайсыз?» переводится как:', options:['Как дела?','Как вас зовут?','Сколько времени?','Где вы живёте?'], answer:'Как дела?'},
+            {type:'fill', skill:'grammar', sentence:'— Қалайсыз?\n— ___, рахмет.', translation:'— Как дела? — Хорошо, спасибо.', options:['Жақсы','Жоқ','Сәлем','Рахмет'], answer:'Жақсы'},
+            {type:'speak', skill:'speaking', target:'Сәлеметсіз бе!', hint:'Здравствуйте!'}
+          ]
+        },
+        { id:'a1-2', title:'Сандар мен түстер', ru:'Числа и цвета', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'Как будет «5» по-казахски?', options:['бес','төрт','алты','жеті'], answer:'бес'},
+            {type:'translate', skill:'writing', prompt:'Напишите число 3 по-казахски', answer:'үш'},
+            {type:'listen', skill:'listening', audioText:'жеті', prompt:'Прослушайте число и выберите цифру', options:['7','8','5','9'], answer:'7'},
+            {type:'choice', skill:'vocab', prompt:'«қызыл» значит:', options:['красный','синий','зелёный','жёлтый'], answer:'красный'},
+            {type:'choice', skill:'vocab', prompt:'«көк» значит:', options:['синий','белый','чёрный','розовый'], answer:'синий'},
+            {type:'fill', skill:'grammar', sentence:'Бір, екі, ___, төрт.', translation:'Один, два, ___, четыре.', options:['үш','бес','алты','он'], answer:'үш'},
+            {type:'speak', skill:'speaking', target:'Бір, екі, үш!', hint:'Один, два, три!'}
+          ]
+        },
+        { id:'a1-3', title:'Күн, апта, ай', ru:'Дни недели и время', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«дүйсенбі» значит:', options:['понедельник','вторник','среда','пятница'], answer:'понедельник'},
+            {type:'choice', skill:'vocab', prompt:'«жексенбі» значит:', options:['воскресенье','суббота','пятница','четверг'], answer:'воскресенье'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «пятница»', answer:'жұма'},
+            {type:'listen', skill:'listening', audioText:'ертең', prompt:'Прослушайте слово и выберите перевод', options:['завтра','сегодня','вчера','неделя'], answer:'завтра'},
+            {type:'choice', skill:'vocab', prompt:'«сенбі» значит:', options:['суббота','воскресенье','пятница','четверг'], answer:'суббота'},
+            {type:'fill', skill:'grammar', sentence:'Дүйсенбі, сейсенбі, ___, бейсенбі.', translation:'Понедельник, вторник, ___, четверг.', options:['сәрсенбі','жұма','сенбі','жексенбі'], answer:'сәрсенбі'},
+            {type:'speak', skill:'speaking', target:'Бүгін дүйсенбі.', hint:'Сегодня понедельник.'}
+          ]
+        },
+        { id:'a1-4', title:'Ауа райы', ru:'Погода', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«жаңбыр» значит:', options:['дождь','снег','ветер','солнце'], answer:'дождь'},
+            {type:'choice', skill:'vocab', prompt:'«қар» значит:', options:['снег','дождь','ветер','жара'], answer:'снег'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «ветер»', answer:'жел'},
+            {type:'listen', skill:'listening', audioText:'суық', prompt:'Прослушайте слово и выберите перевод', options:['холодно','жарко','облачно','ветрено'], answer:'холодно'},
+            {type:'choice', skill:'vocab', prompt:'«Бүгін ауа райы қандай?» переводится как:', options:['Какая сегодня погода?','Сколько сегодня градусов?','Когда будет дождь?','Где сейчас снег?'], answer:'Какая сегодня погода?'},
+            {type:'fill', skill:'grammar', sentence:'Бүгін ___.', translation:'Сегодня жарко.', options:['ыстық','суық','жаңбыр','қар'], answer:'ыстық'},
+            {type:'speak', skill:'speaking', target:'Бүгін суық.', hint:'Сегодня холодно.'}
+          ]
+        },
+        { id:'a1-5', title:'Киім', ru:'Одежда', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«шалбар» значит:', options:['брюки','рубашка','обувь','шапка'], answer:'брюки'},
+            {type:'choice', skill:'vocab', prompt:'«аяқ киім» значит:', options:['обувь','брюки','перчатки','шапка'], answer:'обувь'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «перчатки»', answer:'қолғап'},
+            {type:'listen', skill:'listening', audioText:'көйлек', prompt:'Прослушайте слово и выберите перевод', options:['платье / рубашка','брюки','обувь','шапка'], answer:'платье / рубашка'},
+            {type:'choice', skill:'vocab', prompt:'«бас киім» значит:', options:['головной убор','обувь','перчатки','платье'], answer:'головной убор'},
+            {type:'fill', skill:'grammar', sentence:'Қыста мен ___ киемін.', translation:'Зимой я ношу шапку.', options:['бас киім','аяқ киім','көйлек','қолғап'], answer:'бас киім'},
+            {type:'speak', skill:'speaking', target:'Бұл менің көйлегім.', hint:'Это моё платье.'}
+          ]
+        },
+        { id:'a1-6', title:'Дене мүшелері', ru:'Тело человека', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«қол» значит:', options:['рука','нога','глаз','ухо'], answer:'рука'},
+            {type:'choice', skill:'vocab', prompt:'«көз» значит:', options:['глаз','ухо','нос','рот'], answer:'глаз'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «нога»', answer:'аяқ'},
+            {type:'listen', skill:'listening', audioText:'құлақ', prompt:'Прослушайте слово и выберите перевод', options:['ухо','нос','рот','глаз'], answer:'ухо'},
+            {type:'choice', skill:'vocab', prompt:'«бас» значит:', options:['голова','рука','нога','тело'], answer:'голова'},
+            {type:'fill', skill:'grammar', sentence:'Мен ___ арқылы иіс сезем.', translation:'Я чувствую запах носом.', options:['мұрын','көз','құлақ','ауыз'], answer:'мұрын'},
+            {type:'speak', skill:'speaking', target:'Менің басым ауырады.', hint:'У меня болит голова.'}
+          ]
+        },
+        { id:'a1-7', title:'Үй және жиһаз', ru:'Дом и мебель', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«үстел» значит:', options:['стол','стул','кровать','окно'], answer:'стол'},
+            {type:'choice', skill:'vocab', prompt:'«төсек» значит:', options:['кровать','стол','дверь','окно'], answer:'кровать'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «окно»', answer:'терезе'},
+            {type:'listen', skill:'listening', audioText:'есік', prompt:'Прослушайте слово и выберите перевод', options:['дверь','окно','стол','стул'], answer:'дверь'},
+            {type:'choice', skill:'vocab', prompt:'«бөлме» значит:', options:['комната','дом','стул','дверь'], answer:'комната'},
+            {type:'fill', skill:'grammar', sentence:'Мен ___ отырмын.', translation:'Я сижу на стуле. (орындық + жатыс септігі)', options:['орындықта','орындық','үстелде','төсекте'], answer:'орындықта'},
+            {type:'speak', skill:'speaking', target:'Бұл менің бөлмем.', hint:'Это моя комната.'}
+          ]
+        },
+        { id:'a1-8', title:'Жануарлар', ru:'Животные', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«ит» значит:', options:['собака','кошка','лошадь','корова'], answer:'собака'},
+            {type:'choice', skill:'vocab', prompt:'«мысық» значит:', options:['кошка','собака','овца','птица'], answer:'кошка'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «лошадь»', answer:'ат'},
+            {type:'listen', skill:'listening', audioText:'құс', prompt:'Прослушайте слово и выберите перевод', options:['птица','рыба','собака','овца'], answer:'птица'},
+            {type:'choice', skill:'vocab', prompt:'«сиыр» значит:', options:['корова','овца','лошадь','рыба'], answer:'корова'},
+            {type:'fill', skill:'grammar', sentence:'Менің үйімде ___ бар.', translation:'У меня дома есть кошка.', options:['мысық','сиыр','қой','ат'], answer:'мысық'},
+            {type:'speak', skill:'speaking', target:'Бұл менің итім.', hint:'Это моя собака.'}
+          ]
+        },
+        { id:'a1-9', title:'Мамандықтар', ru:'Профессии', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«мұғалім» значит:', options:['учитель','врач','водитель','продавец'], answer:'учитель'},
+            {type:'choice', skill:'vocab', prompt:'«дәрігер» значит:', options:['врач','учитель','инженер','студент'], answer:'врач'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «продавец»', answer:'сатушы'},
+            {type:'listen', skill:'listening', audioText:'жүргізуші', prompt:'Прослушайте слово и выберите перевод', options:['водитель','инженер','студент','врач'], answer:'водитель'},
+            {type:'choice', skill:'grammar', prompt:'«Сіз кім боласыз?» переводится как:', options:['Кем вы работаете?','Где вы живёте?','Сколько вам лет?','Как вас зовут?'], answer:'Кем вы работаете?'},
+            {type:'fill', skill:'grammar', sentence:'Менің әкем — ___.', translation:'Мой отец — инженер.', options:['инженер','мұғалім','дәрігер','студент'], answer:'инженер'},
+            {type:'speak', skill:'speaking', target:'Мен студентпін.', hint:'Я студент.'}
+          ]
+        },
+        { id:'a1-10', title:'Сұрақ сөздер', ru:'Вопросительные слова', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«кім» значит:', options:['кто','что','где','когда'], answer:'кто'},
+            {type:'choice', skill:'vocab', prompt:'«қашан» значит:', options:['когда','где','как','почему'], answer:'когда'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «почему»', answer:'неге'},
+            {type:'listen', skill:'listening', audioText:'қайда', prompt:'Прослушайте слово и выберите перевод', options:['где','когда','кто','как'], answer:'где'},
+            {type:'choice', skill:'grammar', prompt:'«Қалай?» значит:', options:['Как?','Кто?','Что?','Где?'], answer:'Как?'},
+            {type:'fill', skill:'grammar', sentence:'— ___ барасың?\n— Мектепке барамын.', translation:'— Куда ты идёшь? — Иду в школу.', options:['Қайда','Кім','Қашан','Неге'], answer:'Қайда'},
+            {type:'speak', skill:'speaking', target:'Бұл кім?', hint:'Кто это?'}
+          ]
+        }
+      ]
+    },
+    {
+      id:'a2', code:'A2', name:'Бастапқы деңгей', sub:'Элементарный', color:'a2', colorDeep:'a2-deep',
+      units:[
+        { id:'a2-1', title:'Отбасы және адамдар', ru:'Семья и люди', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«әке» значит:', options:['папа','мама','брат','сестра'], answer:'папа'},
+            {type:'choice', skill:'vocab', prompt:'«ана» значит:', options:['мама','папа','дедушка','бабушка'], answer:'мама'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «бабушка»', answer:'әже'},
+            {type:'listen', skill:'listening', audioText:'отбасы', prompt:'Прослушайте слово и выберите перевод', options:['семья','дом','друг','город'], answer:'семья'},
+            {type:'choice', skill:'vocab', prompt:'«аға» значит:', options:['старший брат','младший брат','дедушка','дядя'], answer:'старший брат'},
+            {type:'fill', skill:'grammar', sentence:'Бұл менің ___.', translation:'Это мой папа.', options:['әкем','үй','кітап','мысық'], answer:'әкем'},
+            {type:'speak', skill:'speaking', target:'Бұл менің анам.', hint:'Это моя мама.'}
+          ]
+        },
+        { id:'a2-2', title:'Тамақ және сусындар', ru:'Еда и напитки', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«су» значит:', options:['вода','чай','молоко','хлеб'], answer:'вода'},
+            {type:'choice', skill:'vocab', prompt:'«шай» значит:', options:['чай','кофе','вода','сок'], answer:'чай'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «хлеб»', answer:'нан'},
+            {type:'listen', skill:'listening', audioText:'алма', prompt:'Прослушайте слово и выберите перевод', options:['яблоко','хлеб','мясо','молоко'], answer:'яблоко'},
+            {type:'fill', skill:'grammar', sentence:'Мен ___ ішемін.', translation:'Я пью воду. (ішемін — пью)', options:['су','нан','ет','алма'], answer:'су'},
+            {type:'fill', skill:'grammar', sentence:'Мен ___ жеймін.', translation:'Я ем хлеб. (жеймін — ем)', options:['нан','су','шай','кофе'], answer:'нан'},
+            {type:'speak', skill:'speaking', target:'Су, рахмет.', hint:'Воды, пожалуйста.'}
+          ]
+        },
+        { id:'a2-3', title:'Күн тәртібі', ru:'Распорядок дня', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«таңғы ас» значит:', options:['завтрак','обед','ужин','работа'], answer:'завтрак'},
+            {type:'choice', skill:'vocab', prompt:'«кешкі ас» значит:', options:['ужин','завтрак','обед','сон'], answer:'ужин'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «обед»', answer:'түскі ас'},
+            {type:'listen', skill:'listening', audioText:'ұйықтаймын', prompt:'Прослушайте и выберите перевод', options:['я сплю','я встаю','я ем','я работаю'], answer:'я сплю'},
+            {type:'choice', skill:'vocab', prompt:'«тұру» значит:', options:['вставать','спать','есть','работать'], answer:'вставать'},
+            {type:'fill', skill:'grammar', sentence:'Мен таңертең ___.', translation:'Я встаю утром.', options:['тұрамын','ұйықтаймын','жеймін','жұмыс істеймін'], answer:'тұрамын'},
+            {type:'speak', skill:'speaking', target:'Мен таңғы ас ішемін.', hint:'Я завтракаю.'}
+          ]
+        },
+        { id:'a2-4', title:'Хобби және бос уақыт', ru:'Хобби и свободное время', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«кітап оқу» значит:', options:['читать книгу','слушать музыку','плавать','рисовать'], answer:'читать книгу'},
+            {type:'choice', skill:'vocab', prompt:'«жүзу» значит:', options:['плавать','бегать','рисовать','петь'], answer:'плавать'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «рисовать»', answer:'сурет салу'},
+            {type:'listen', skill:'listening', audioText:'ән тыңдау', prompt:'Прослушайте и выберите перевод', options:['слушать музыку','читать книгу','плавать','рисовать'], answer:'слушать музыку'},
+            {type:'choice', skill:'grammar', prompt:'«Сіздің хоббиіңіз не?» переводится как:', options:['Какое у вас хобби?','Сколько вам лет?','Где вы работаете?','Куда вы идёте?'], answer:'Какое у вас хобби?'},
+            {type:'fill', skill:'grammar', sentence:'Менің сүйікті ісім — ___.', translation:'Моё любимое занятие — рисование.', options:['сурет салу','жүзу','ән тыңдау','кітап оқу'], answer:'сурет салу'},
+            {type:'speak', skill:'speaking', target:'Мен жүзуді жақсы көремін.', hint:'Я люблю плавать.'}
+          ]
+        },
+        { id:'a2-5', title:'Көлік', ru:'Транспорт', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«ұшақ» значит:', options:['самолёт','поезд','машина','автобус'], answer:'самолёт'},
+            {type:'choice', skill:'vocab', prompt:'«пойыз» значит:', options:['поезд','самолёт','автобус','велосипед'], answer:'поезд'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «велосипед»', answer:'велосипед'},
+            {type:'listen', skill:'listening', audioText:'машина', prompt:'Прослушайте слово и выберите перевод', options:['машина','автобус','поезд','самолёт'], answer:'машина'},
+            {type:'choice', skill:'vocab', prompt:'«жаяу жүру» значит:', options:['ходить пешком','ездить на машине','летать','плавать'], answer:'ходить пешком'},
+            {type:'fill', skill:'grammar', sentence:'Мен жұмысқа ___ барамын.', translation:'Я езжу на работу на автобусе. (автобус + көмектес септігі)', options:['автобуспен','автобус','автобустан','автобуста'], answer:'автобуспен'},
+            {type:'speak', skill:'speaking', target:'Мен ұшақпен ұшамын.', hint:'Я лечу на самолёте.'}
+          ]
+        },
+        { id:'a2-6', title:'Денсаулық', ru:'Здоровье', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«дәрі» значит:', options:['лекарство','болезнь','врач','боль'], answer:'лекарство'},
+            {type:'choice', skill:'vocab', prompt:'«ауру» значит:', options:['болезнь','лекарство','здоровье','врач'], answer:'болезнь'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «врач»', answer:'дәрігер'},
+            {type:'listen', skill:'listening', audioText:'ауырады', prompt:'Прослушайте слово и выберите перевод', options:['болит','выздоравливает','лечит','спит'], answer:'болит'},
+            {type:'choice', skill:'grammar', prompt:'«Мен ауырмын» значит:', options:['Я болен(-льна)','Я здоров(а)','Я счастлив(а)','Я устал(а)'], answer:'Я болен(-льна)'},
+            {type:'fill', skill:'grammar', sentence:'Менің тісім ___.', translation:'У меня болит зуб.', options:['ауырады','жазылады','дәрі','дәрігер'], answer:'ауырады'},
+            {type:'speak', skill:'speaking', target:'Менің тамағым ауырады.', hint:'У меня болит горло.'}
+          ]
+        },
+        { id:'a2-7', title:'Сандар 11–100 және баға', ru:'Числа 11–100 и цена', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'Как будет «20» по-казахски?', options:['жиырма','он бір','отыз','жүз'], answer:'жиырма'},
+            {type:'choice', skill:'vocab', prompt:'Как будет «100» по-казахски?', options:['жүз','он','жиырма','отыз'], answer:'жүз'},
+            {type:'translate', skill:'writing', prompt:'Напишите число 11 по-казахски', answer:'он бір'},
+            {type:'listen', skill:'listening', audioText:'отыз', prompt:'Прослушайте число и выберите цифру', options:['30','13','3','300'], answer:'30'},
+            {type:'choice', skill:'grammar', prompt:'«Бұл қанша тұрады?» значит:', options:['Сколько это стоит?','Что это такое?','Где это?','Когда это будет?'], answer:'Сколько это стоит?'},
+            {type:'fill', skill:'grammar', sentence:'Бұл нан ___ теңге тұрады.', translation:'Этот хлеб стоит сто тенге.', options:['жүз','он','жиырма','отыз'], answer:'жүз'},
+            {type:'speak', skill:'speaking', target:'Бұл қанша тұрады?', hint:'Сколько это стоит?'}
+          ]
+        },
+        { id:'a2-8', title:'Өткен шақ', ru:'Прошедшее время глаголов', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«бардым» значит:', options:['я пошёл','я пришёл','я написал','я читал'], answer:'я пошёл'},
+            {type:'choice', skill:'grammar', prompt:'«жаздым» значит:', options:['я написал','я пошёл','я прочитал','я увидел'], answer:'я написал'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «я видел»', answer:'көрдім'},
+            {type:'listen', skill:'listening', audioText:'келдім', prompt:'Прослушайте и выберите перевод', options:['я пришёл','я пошёл','я написал','я читал'], answer:'я пришёл'},
+            {type:'fill', skill:'grammar', sentence:'Мен кеше кино ___.', translation:'Я вчера смотрел фильм.', options:['көрдім','бардым','жаздым','оқыдым'], answer:'көрдім'},
+            {type:'fill', skill:'grammar', sentence:'Ол хат ___.', translation:'Он написал письмо. (3-е лицо прошедшего времени)', options:['жазды','барды','келді','оқыды'], answer:'жазды'},
+            {type:'speak', skill:'speaking', target:'Мен кеше мектепке бардым.', hint:'Я вчера ходил в школу.'}
+          ]
+        },
+        { id:'a2-9', title:'Жоспарлар', ru:'Планы на будущее', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«ертең» значит:', options:['завтра','сегодня','вчера','сейчас'], answer:'завтра'},
+            {type:'choice', skill:'vocab', prompt:'«келесі аптада» значит:', options:['на следующей неделе','на этой неделе','в прошлом месяце','сегодня вечером'], answer:'на следующей неделе'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «план»', answer:'жоспар'},
+            {type:'listen', skill:'listening', audioText:'келесі жылы', prompt:'Прослушайте и выберите перевод', options:['в следующем году','в этом году','в прошлом году','сегодня'], answer:'в следующем году'},
+            {type:'fill', skill:'grammar', sentence:'___ мен киноға барамын.', translation:'Завтра я пойду в кино.', options:['Ертең','Кеше','Биыл','Қазір'], answer:'Ертең'},
+            {type:'choice', skill:'grammar', prompt:'«Сенің жоспарың не?» переводится как:', options:['Какие у тебя планы?','Сколько тебе лет?','Куда ты идёшь?','Что ты ешь?'], answer:'Какие у тебя планы?'},
+            {type:'speak', skill:'speaking', target:'Ертең мен жұмысқа барамын.', hint:'Завтра я пойду на работу.'}
+          ]
+        },
+        { id:'a2-10', title:'Тәуелдік жалғау', ru:'Притяжательные окончания', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«үйім» — это:', options:['мой дом','твой дом','его дом','наш дом'], answer:'мой дом'},
+            {type:'choice', skill:'grammar', prompt:'«кітабың» — это:', options:['твоя книга','моя книга','его книга','их книга'], answer:'твоя книга'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «его/её дом» (үй + тәуелдік жалғау)', answer:'үйі'},
+            {type:'listen', skill:'listening', audioText:'анам', prompt:'Прослушайте и выберите перевод', options:['моя мама','твоя мама','его мама','наша мама'], answer:'моя мама'},
+            {type:'fill', skill:'grammar', sentence:'Бұл менің ___.', translation:'Это моя машина. (машина + менің)', options:['машинам','машинаң','машинасы','машинамыз'], answer:'машинам'},
+            {type:'fill', skill:'grammar', sentence:'Бұл сенің ___.', translation:'Это твой друг. (дос + сенің)', options:['досың','досым','досы','достарың'], answer:'досың'},
+            {type:'speak', skill:'speaking', target:'Бұл менің отбасым.', hint:'Это моя семья.'}
+          ]
+        }
+      ]
+    },
+    {
+      id:'b1', code:'B1', name:'Орта деңгей', sub:'Средний', color:'b1', colorDeep:'b1-deep',
+      units:[
+        { id:'b1-1', title:'Етістіктер: осы шақ', ru:'Глаголы: настоящее время', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«барамын» значит:', options:['я иду','я читаю','я пишу','я говорю'], answer:'я иду'},
+            {type:'choice', skill:'grammar', prompt:'«оқимын» значит:', options:['я читаю','я иду','я пишу','я прихожу'], answer:'я читаю'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «я пишу»', answer:'жазамын'},
+            {type:'listen', skill:'listening', audioText:'сөйлеймін', prompt:'Прослушайте и выберите перевод', options:['я говорю','я иду','я читаю','я пишу'], answer:'я говорю'},
+            {type:'fill', skill:'grammar', sentence:'Мен кітап ___.', translation:'Я читаю книгу.', options:['оқимын','барамын','жазамын','келемін'], answer:'оқимын'},
+            {type:'fill', skill:'grammar', sentence:'Ол мектепке ___.', translation:'Он идёт в школу. (3-е лицо)', options:['барады','барамын','барасың','барамыз'], answer:'барады'},
+            {type:'speak', skill:'speaking', target:'Мен кітап оқимын.', hint:'Я читаю книгу.'}
+          ]
+        },
+        { id:'b1-2', title:'Саяхат және қала', ru:'Путешествия и город', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«әуежай» значит:', options:['аэропорт','вокзал','гостиница','улица'], answer:'аэропорт'},
+            {type:'choice', skill:'vocab', prompt:'«қонақүй» значит:', options:['гостиница','дом','магазин','аэропорт'], answer:'гостиница'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «улица»', answer:'көше'},
+            {type:'listen', skill:'listening', audioText:'билет', prompt:'Прослушайте слово и выберите перевод', options:['билет','карта','поезд','автобус'], answer:'билет'},
+            {type:'choice', skill:'grammar', prompt:'«Автобус қайда?» переводится как:', options:['Где автобус?','Что это?','Сколько стоит?','Когда поезд?'], answer:'Где автобус?'},
+            {type:'fill', skill:'grammar', sentence:'Мен ___ барамын.', translation:'Я еду в город. (қала + барыс септігі)', options:['қалаға','қала','қаладан','қалада'], answer:'қалаға'},
+            {type:'speak', skill:'speaking', target:'Автобус қайда?', hint:'Где автобус?'}
+          ]
+        },
+        { id:'b1-3', title:'Өткен шақ: барлық жақтар', ru:'Прошедшее время: все лица', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«бардың» значит:', options:['ты пошёл','я пошёл','мы пошли','он пошёл'], answer:'ты пошёл'},
+            {type:'choice', skill:'grammar', prompt:'«бардық» значит:', options:['мы пошли','вы пошли','я пошёл','они пошли'], answer:'мы пошли'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «вы (мн.ч.) пошли»', answer:'бардыңдар'},
+            {type:'listen', skill:'listening', audioText:'келдік', prompt:'Прослушайте и выберите перевод', options:['мы пришли','я пришёл','ты пришёл','они пришли'], answer:'мы пришли'},
+            {type:'fill', skill:'grammar', sentence:'Біз кеше саябаққа ___.', translation:'Мы вчера пошли в парк.', options:['бардық','бардым','барды','бардыңдар'], answer:'бардық'},
+            {type:'fill', skill:'grammar', sentence:'Сендер фильм ___ пе?', translation:'Вы (мн.ч.) смотрели фильм?', options:['көрдіңдер','көрдім','көрді','көрдік'], answer:'көрдіңдер'},
+            {type:'speak', skill:'speaking', target:'Біз кеше саябаққа бардық.', hint:'Мы вчера пошли в парк.'}
+          ]
+        },
+        { id:'b1-4', title:'Жұмыс орны', ru:'Работа и офис', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«кеңсе» значит:', options:['офис','дом','магазин','завод'], answer:'офис'},
+            {type:'choice', skill:'vocab', prompt:'«басшы» значит:', options:['начальник','сотрудник','клиент','гость'], answer:'начальник'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «зарплата»', answer:'жалақы'},
+            {type:'listen', skill:'listening', audioText:'кездесу', prompt:'Прослушайте слово и выберите перевод', options:['встреча','отпуск','зарплата','офис'], answer:'встреча'},
+            {type:'choice', skill:'grammar', prompt:'«Сіз қайда жұмыс істейсіз?» значит:', options:['Где вы работаете?','Кем вы работаете?','Когда вы работаете?','Сколько вы зарабатываете?'], answer:'Где вы работаете?'},
+            {type:'fill', skill:'grammar', sentence:'Ертең маған ___ бар.', translation:'Завтра у меня встреча.', options:['кездесу','демалыс','жалақы','басшы'], answer:'кездесу'},
+            {type:'speak', skill:'speaking', target:'Мен кеңседе жұмыс істеймін.', hint:'Я работаю в офисе.'}
+          ]
+        },
+        { id:'b1-5', title:'Салыстыру дәрежесі', ru:'Сравнительная степень', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«үлкенірек» значит:', options:['больше','меньше','лучше','хуже'], answer:'больше'},
+            {type:'choice', skill:'grammar', prompt:'«кішірек» значит:', options:['меньше','больше','лучше','такой же'], answer:'меньше'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «лучше» (сравнительная степень от жақсы)', answer:'жақсырақ'},
+            {type:'listen', skill:'listening', audioText:'әдемірек', prompt:'Прослушайте и выберите перевод', options:['красивее','больше','меньше','хуже'], answer:'красивее'},
+            {type:'choice', skill:'grammar', prompt:'«Бұл үйден үлкенірек» значит:', options:['Больше, чем этот дом','Меньше, чем этот дом','Так же, как этот дом','Красивее этого дома'], answer:'Больше, чем этот дом'},
+            {type:'fill', skill:'grammar', sentence:'Бұл кітап ана кітаптан ___.', translation:'Эта книга лучше той книги. (кітап + шығыс септігі)', options:['жақсырақ','үлкенірек','кішірек','әдемірек'], answer:'жақсырақ'},
+            {type:'speak', skill:'speaking', target:'Бұл үй ана үйден үлкенірек.', hint:'Этот дом больше того дома.'}
+          ]
+        },
+        { id:'b1-6', title:'Шартты рай', ru:'Условное наклонение (-са/-се)', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«барсам» значит:', options:['если я пойду','я пошёл','я иду','я пойду'], answer:'если я пойду'},
+            {type:'choice', skill:'grammar', prompt:'«келсе» значит:', options:['если он придёт','он пришёл','он приходит','он придёт'], answer:'если он придёт'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «если будет» (шартты рай от болу)', answer:'болса'},
+            {type:'listen', skill:'listening', audioText:'уақыт болса', prompt:'Прослушайте фразу и выберите перевод', options:['если будет время','если будет дождь','если пойду','если придёт'], answer:'если будет время'},
+            {type:'fill', skill:'grammar', sentence:'Уақытым ___, мен саған барамын.', translation:'Если у меня будет время, я приду к тебе.', options:['болса','барса','келсе','тұрса'], answer:'болса'},
+            {type:'choice', skill:'grammar', prompt:'«Жаңбыр жауса, үйде отырамын» значит:', options:['Если пойдёт дождь, я останусь дома','Если будет солнце, я пойду гулять','Если холодно, я надену куртку','Если жарко, я буду пить воду'], answer:'Если пойдёт дождь, я останусь дома'},
+            {type:'speak', skill:'speaking', target:'Ақшам болса, саяхаттаймын.', hint:'Если у меня будут деньги, я буду путешествовать.'}
+          ]
+        },
+        { id:'b1-7', title:'Мейрамханада', ru:'В ресторане', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«мәзір» значит:', options:['меню','заказ','счёт','стол'], answer:'меню'},
+            {type:'choice', skill:'vocab', prompt:'«дәмді» значит:', options:['вкусный','дорогой','горячий','холодный'], answer:'вкусный'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «заказ»', answer:'тапсырыс'},
+            {type:'listen', skill:'listening', audioText:'есеп', prompt:'Прослушайте слово и выберите перевод', options:['счёт','меню','заказ','вкусный'], answer:'счёт'},
+            {type:'choice', skill:'grammar', prompt:'«Тапсырыс бере аламын ба?» значит:', options:['Можно сделать заказ?','Сколько это стоит?','Где туалет?','Это вкусно?'], answer:'Можно сделать заказ?'},
+            {type:'fill', skill:'grammar', sentence:'— Мәзірді әкелесіз бе?\n— ___, әрине.', translation:'— Принесёте меню? — Да, конечно.', options:['Иә','Жоқ','Рахмет','Кешіріңіз'], answer:'Иә'},
+            {type:'speak', skill:'speaking', target:'Бұл өте дәмді!', hint:'Это очень вкусно!'}
+          ]
+        },
+        { id:'b1-8', title:'Эмоциялар мен сезімдер', ru:'Эмоции и чувства', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«қуанышты» значит:', options:['радостный','грустный','злой','уставший'], answer:'радостный'},
+            {type:'choice', skill:'vocab', prompt:'«шаршаған» значит:', options:['уставший','радостный','злой','счастливый'], answer:'уставший'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «счастливый»', answer:'бақытты'},
+            {type:'listen', skill:'listening', audioText:'ашулы', prompt:'Прослушайте слово и выберите перевод', options:['злой','грустный','уставший','счастливый'], answer:'злой'},
+            {type:'choice', skill:'grammar', prompt:'«Мен қуаныштымын» значит:', options:['Я рад(а)','Я устал(а)','Я злюсь','Мне грустно'], answer:'Я рад(а)'},
+            {type:'fill', skill:'grammar', sentence:'Емтихан алдында мен ___.', translation:'Перед экзаменом я боюсь/нервничаю.', options:['қорқамын','қуанамын','ұйықтаймын','жеймін'], answer:'қорқамын'},
+            {type:'speak', skill:'speaking', target:'Мен бүгін бақыттымын.', hint:'Я сегодня счастлив(а).'}
+          ]
+        },
+        { id:'b1-9', title:'Адамды сипаттау', ru:'Описание людей', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«биік» значит:', options:['высокий','низкий','худой','полный'], answer:'высокий'},
+            {type:'choice', skill:'vocab', prompt:'«мейірімді» значит:', options:['добрый','злой','умный','ленивый'], answer:'добрый'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «умный»', answer:'ақылды'},
+            {type:'listen', skill:'listening', audioText:'аласа', prompt:'Прослушайте слово и выберите перевод', options:['невысокий','высокий','худой','полный'], answer:'невысокий'},
+            {type:'choice', skill:'grammar', prompt:'«Ол өте ақылды» значит:', options:['Он/она очень умный(ая)','Он/она очень добрый(ая)','Он/она очень высокий(ая)','Он/она очень худой(ая)'], answer:'Он/она очень умный(ая)'},
+            {type:'fill', skill:'grammar', sentence:'Менің ағам өте ___.', translation:'Мой старший брат очень высокий.', options:['биік','аласа','арық','семіз'], answer:'биік'},
+            {type:'speak', skill:'speaking', target:'Ол өте мейірімді адам.', hint:'Он/она очень добрый человек.'}
+          ]
+        },
+        { id:'b1-10', title:'Телефон арқылы сөйлесу', ru:'Телефонный разговор', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«алло» значит:', options:['алло','пока','спасибо','извините'], answer:'алло'},
+            {type:'choice', skill:'vocab', prompt:'«кейінірек» значит:', options:['попозже','сейчас','вчера','никогда'], answer:'попозже'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «звонить»', answer:'қоңырау шалу'},
+            {type:'listen', skill:'listening', audioText:'бос емеспін', prompt:'Прослушайте фразу и выберите перевод', options:['я занят','я свободен','я дома','я на работе'], answer:'я занят'},
+            {type:'choice', skill:'grammar', prompt:'«Сізге кейінірек хабарласамын» значит:', options:['Я свяжусь с вами попозже','Я вам звоню сейчас','Позвоните мне','Я занят весь день'], answer:'Я свяжусь с вами попозже'},
+            {type:'fill', skill:'grammar', sentence:'— Алло!\n— ___, тыңдап тұрмын.', translation:'— Алло! — Да, слушаю.', options:['Иә','Жоқ','Рахмет','Кешіріңіз'], answer:'Иә'},
+            {type:'speak', skill:'speaking', target:'Мен сізге кейінірек қоңырау шаламын.', hint:'Я перезвоню вам попозже.'}
+          ]
+        }
+      ]
+    },
+    {
+      id:'b2', code:'B2', name:'Жоғары деңгей', sub:'Продвинутый', color:'b2', colorDeep:'b2-deep',
+      units:[
+        { id:'b2-1', title:'Септіктер', ru:'Падежи (склонения)', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'Барыс септігі (дательный падеж) для чего используется?', options:['Направление: «куда / кому»','Принадлежность: «чей»','Место: «где»','Совместность: «с кем»'], answer:'Направление: «куда / кому»'},
+            {type:'fill', skill:'grammar', sentence:'мектеп + ке = ___', translation:'школа + суффикс дательного падежа', options:['мектепке','мектептен','мектепте','мектептің'], answer:'мектепке'},
+            {type:'choice', skill:'grammar', prompt:'Что значит слово «үйден»?', options:['из дома','в доме','к дому','с домом'], answer:'из дома'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский «в доме» (жатыс септігі)', answer:'үйде'},
+            {type:'choice', skill:'grammar', prompt:'В каком падеже стоит слово «қаламмен»?', options:['Көмектес (творительный)','Ілік (родительный)','Табыс (винительный)','Барыс (дательный)'], answer:'Көмектес (творительный)'},
+            {type:'fill', skill:'grammar', sentence:'Мен ___ оқимын.', translation:'Я читаю книгу. (кітап + табыс септігі)', options:['кітапты','кітапқа','кітаптан','кітапта'], answer:'кітапты'},
+            {type:'speak', skill:'speaking', target:'Мен қалаға барамын.', hint:'Я еду в город.'}
+          ]
+        },
+        { id:'b2-2', title:'Тұрмыстық сөйлеу тілі', ru:'Разговорные выражения', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«Сау болыңыз!» значит:', options:['До свидания!','Здравствуйте!','Спасибо!','Извините!'], answer:'До свидания!'},
+            {type:'choice', skill:'vocab', prompt:'«Ештеңе етпейді» значит:', options:['Ничего страшного','Очень приятно','Спасибо большое','Добро пожаловать'], answer:'Ничего страшного'},
+            {type:'translate', skill:'writing', prompt:'Переведите: «Не за что» (ответ на «спасибо»)', answer:'оқасы жоқ'},
+            {type:'listen', skill:'listening', audioText:'Қош келдіңіз!', prompt:'Прослушайте фразу и выберите перевод', options:['Добро пожаловать!','До свидания!','Извините!','Спасибо!'], answer:'Добро пожаловать!'},
+            {type:'choice', skill:'vocab', prompt:'«Тамаша!» значит:', options:['Отлично!','Плохо','Может быть','Никогда'], answer:'Отлично!'},
+            {type:'fill', skill:'grammar', sentence:'— Рахмет көп!\n— ___.', translation:'— Большое спасибо! — Не за что.', options:['Оқасы жоқ','Сәлем','Кешіріңіз','Жоқ'], answer:'Оқасы жоқ'},
+            {type:'speak', skill:'speaking', target:'Қош келдіңіз!', hint:'Добро пожаловать!'}
+          ]
+        },
+        { id:'b2-3', title:'Себеп-салдар', ru:'Причинно-следственные союзы', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«себебі» значит:', options:['потому что','поэтому','тем не менее','однако'], answer:'потому что'},
+            {type:'choice', skill:'grammar', prompt:'«сондықтан» значит:', options:['поэтому','потому что','тем не менее','или'], answer:'поэтому'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «тем не менее»', answer:'дегенмен'},
+            {type:'listen', skill:'listening', audioText:'өйткені', prompt:'Прослушайте слово и выберите перевод', options:['потому что','поэтому','тем не менее','однако'], answer:'потому что'},
+            {type:'fill', skill:'grammar', sentence:'Мен үйде қалдым, ___ ауырдым.', translation:'Я остался дома, потому что заболел.', options:['себебі','сондықтан','дегенмен','бірақ'], answer:'себебі'},
+            {type:'fill', skill:'grammar', sentence:'Жаңбыр жауды, ___ мен қолшатыр алдым.', translation:'Шёл дождь, поэтому я взял зонт.', options:['сондықтан','себебі','өйткені','дегенмен'], answer:'сондықтан'},
+            {type:'speak', skill:'speaking', target:'Мен шаршадым, сондықтан ерте ұйықтаймын.', hint:'Я устал, поэтому лягу спать рано.'}
+          ]
+        },
+        { id:'b2-4', title:'Ресми және бейресми стиль', ru:'Формальный и неформальный стиль', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'Когда используется местоимение «Сіз»?', options:['При вежливом обращении на «вы»','Только к детям','Только во множественном числе','Никогда не используется'], answer:'При вежливом обращении на «вы»'},
+            {type:'choice', skill:'grammar', prompt:'«Қалайсың?» — это:', options:['Неформальное «Как дела?»','Формальное «Как дела?»','«До свидания»','«Спасибо»'], answer:'Неформальное «Как дела?»'},
+            {type:'translate', skill:'writing', prompt:'Переведите формально: «Как вас зовут?»', answer:'сіздің атыңыз кім'},
+            {type:'listen', skill:'listening', audioText:'Сенің атың кім?', prompt:'Прослушайте фразу и выберите перевод', options:['Как тебя зовут? (неформально)','Как вас зовут? (формально)','Сколько тебе лет?','Где ты живёшь?'], answer:'Как тебя зовут? (неформально)'},
+            {type:'fill', skill:'grammar', sentence:'Досыңызбен сөйлескенде: «___, қалайсың?»', translation:'При разговоре с другом: «Привет, как дела?»', options:['Сәлем','Сәлеметсіз бе','Қош келдіңіз','Сау болыңыз'], answer:'Сәлем'},
+            {type:'fill', skill:'grammar', sentence:'Бастығыңызбен сөйлескенде: «___, қалайсыз?»', translation:'При разговоре с начальником: «Здравствуйте, как дела?»', options:['Сәлеметсіз бе','Сәлем','Хай','Йоу'], answer:'Сәлеметсіз бе'},
+            {type:'speak', skill:'speaking', target:'Сіздің атыңыз кім?', hint:'Как вас зовут? (формально)'}
+          ]
+        },
+        { id:'b2-5', title:'Іскерлік қазақ тілі', ru:'Деловой казахский', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«келісімшарт» значит:', options:['договор','документ','предложение','встреча'], answer:'договор'},
+            {type:'choice', skill:'vocab', prompt:'«құжат» значит:', options:['документ','договор','срок','предложение'], answer:'документ'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «срок»', answer:'мерзім'},
+            {type:'listen', skill:'listening', audioText:'ұсыныс', prompt:'Прослушайте слово и выберите перевод', options:['предложение','документ','договор','срок'], answer:'предложение'},
+            {type:'choice', skill:'grammar', prompt:'«Құжатқа қол қою керек» значит:', options:['Нужно подписать документ','Нужно прочитать документ','Нужно отправить документ','Нужно удалить документ'], answer:'Нужно подписать документ'},
+            {type:'fill', skill:'grammar', sentence:'Келісімшарттың ___ бір ай.', translation:'Срок договора — один месяц.', options:['мерзімі','ұсынысы','құжаты','кездесуі'], answer:'мерзімі'},
+            {type:'speak', skill:'speaking', target:'Құжатқа қол қойыңыз, өтінемін.', hint:'Подпишите документ, пожалуйста.'}
+          ]
+        },
+        { id:'b2-6', title:'Пікір білдіру', ru:'Обсуждение новостей и мнение', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«менің ойымша» значит:', options:['по-моему','соглашаюсь','не соглашаюсь','новость'], answer:'по-моему'},
+            {type:'choice', skill:'vocab', prompt:'«келісемін» значит:', options:['соглашаюсь','не соглашаюсь','думаю','сомневаюсь'], answer:'соглашаюсь'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «не соглашаюсь»', answer:'келіспеймін'},
+            {type:'listen', skill:'listening', audioText:'жаңалық', prompt:'Прослушайте слово и выберите перевод', options:['новость','мнение','согласие','несогласие'], answer:'новость'},
+            {type:'choice', skill:'grammar', prompt:'«Мен сізбен келіспеймін» значит:', options:['Я с вами не согласен(на)','Я с вами согласен(на)','Я вас не понимаю','Мне это неинтересно'], answer:'Я с вами не согласен(на)'},
+            {type:'fill', skill:'grammar', sentence:'___, бұл өте маңызды мәселе.', translation:'По-моему, это очень важный вопрос.', options:['Менің ойымша','Келісемін','Жаңалық','Пікір'], answer:'Менің ойымша'},
+            {type:'speak', skill:'speaking', target:'Мен сізбен толық келісемін.', hint:'Я полностью с вами согласен(на).'}
+          ]
+        },
+        { id:'b2-7', title:'Көсемше', ru:'Деепричастие (-п/-ып/-іп)', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«барып» значит:', options:['сходив / пойдя','придя','написав','читая'], answer:'сходив / пойдя'},
+            {type:'choice', skill:'grammar', prompt:'«келіп» значит:', options:['придя','сходив','написав','читая'], answer:'придя'},
+            {type:'translate', skill:'writing', prompt:'Переведите деепричастие: «написав» (жазу)', answer:'жазып'},
+            {type:'listen', skill:'listening', audioText:'оқып', prompt:'Прослушайте и выберите перевод', options:['почитав / читая','написав','сходив','придя'], answer:'почитав / читая'},
+            {type:'choice', skill:'grammar', prompt:'«Үйге барып, тамақ іштім» значит:', options:['Придя домой, я поел','Идя домой, я готовил','Я не пошёл домой','Я буду дома есть'], answer:'Придя домой, я поел'},
+            {type:'fill', skill:'grammar', sentence:'Мен дүкенге ___, нан алдым.', translation:'Сходив в магазин, я купил хлеб.', options:['барып','келіп','жазып','оқып'], answer:'барып'},
+            {type:'speak', skill:'speaking', target:'Мен хат жазып отырмын.', hint:'Я сейчас пишу письмо.'}
+          ]
+        },
+        { id:'b2-8', title:'Мақал-мәтелдер', ru:'Казахские пословицы', icon:'ear',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«Еңбексіз өмір – сөнген көмір» переводится как:', options:['Жизнь без труда — потухший уголь','Труд всегда приносит вред','Уголь важнее труда','Жизнь без огня невозможна'], answer:'Жизнь без труда — потухший уголь'},
+            {type:'choice', skill:'vocab', prompt:'«Ас – адамның арқауы» переводится как:', options:['Еда даёт человеку силу','Человек не должен есть много','Работа важнее еды','Еда — это роскошь'], answer:'Еда даёт человеку силу'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «потухший уголь» (из пословицы о труде)', answer:'сөнген көмір'},
+            {type:'listen', skill:'listening', audioText:'Еңбексіз өмір – сөнген көмір.', prompt:'Прослушайте пословицу и выберите перевод', options:['Жизнь без труда — потухший уголь.','Труд — это счастье.','Уголь горит долго.','Жизнь коротка.'], answer:'Жизнь без труда — потухший уголь.'},
+            {type:'fill', skill:'grammar', sentence:'Еңбек етпесең, елге ___.', translation:'Если не трудишься — не вини народ. (из казахской пословицы)', options:['өкпелеме','сөйле','жаса','келме'], answer:'өкпелеме'},
+            {type:'choice', skill:'grammar', prompt:'О чём эти пословицы?', options:['О ценности труда','О важности отдыха','О любви к путешествиям','О значении денег'], answer:'О ценности труда'},
+            {type:'speak', skill:'speaking', target:'Еңбексіз өмір – сөнген көмір.', hint:'Жизнь без труда — потухший уголь. (казахская пословица)'}
+          ]
+        },
+        { id:'b2-9', title:'Күрделі жалғаулықтар', ru:'Сложные союзы', icon:'pencil',
+          exercises:[
+            {type:'choice', skill:'grammar', prompt:'«немесе» значит:', options:['или','но','и','только'], answer:'или'},
+            {type:'choice', skill:'grammar', prompt:'«бірақ» значит:', options:['но','или','и','только'], answer:'но'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «только»', answer:'тек қана'},
+            {type:'listen', skill:'listening', audioText:'әрі', prompt:'Прослушайте и выберите перевод', options:['и (также)','или','но','только'], answer:'и (также)'},
+            {type:'fill', skill:'grammar', sentence:'Шай ___ кофе ішесің бе?', translation:'Ты будешь пить чай или кофе?', options:['немесе','бірақ','әрі','тек'], answer:'немесе'},
+            {type:'fill', skill:'grammar', sentence:'Ол жас, ___ ақылды.', translation:'Он молодой, но умный.', options:['бірақ','немесе','әрі','тек'], answer:'бірақ'},
+            {type:'speak', skill:'speaking', target:'Мен шай немесе кофе ішемін.', hint:'Я выпью чай или кофе.'}
+          ]
+        },
+        { id:'b2-10', title:'Қайталау', ru:'Итоговое повторение', icon:'book',
+          exercises:[
+            {type:'choice', skill:'vocab', prompt:'«Сәлеметсіз бе!», «Қалайсыз?», «Рахмет» — это слова на тему:', options:['Приветствия','Числа','Погода','Транспорт'], answer:'Приветствия'},
+            {type:'fill', skill:'grammar', sentence:'Мен кеше кітап ___.', translation:'Я вчера читал книгу. (прошедшее время)', options:['оқыдым','оқимын','оқы','оқисың'], answer:'оқыдым'},
+            {type:'choice', skill:'vocab', prompt:'«Қызыл, көк, сары» — это:', options:['цвета','цифры','дни недели','эмоции'], answer:'цвета'},
+            {type:'translate', skill:'writing', prompt:'Переведите на казахский: «Сколько это стоит?»', answer:'бұл қанша тұрады'},
+            {type:'fill', skill:'grammar', sentence:'Мен ауырсам, ___ барамын.', translation:'Если я заболею, пойду к врачу.', options:['дәрігерге','мектепке','дүкенге','үйге'], answer:'дәрігерге'},
+            {type:'choice', skill:'grammar', prompt:'В чём разница между «себебі» и «сондықтан»?', options:['«Себебі» = потому что, «сондықтан» = поэтому','Это синонимы','«Себебі» = поэтому, «сондықтан» = потому что','Разницы нет'], answer:'«Себебі» = потому что, «сондықтан» = поэтому'},
+            {type:'speak', skill:'speaking', target:'Мен қазақ тілін үйреніп жатырмын.', hint:'Я изучаю казахский язык.'}
+          ]
+        }
+      ]
+    }
+  ];
+
+  var SKILL_LABEL = { vocab:'Словарный запас', writing:'Письмо', listening:'Аудирование', grammar:'Грамматика', speaking:'Говорение' };
+
+  /* ================= STATE / STORAGE ================= */
+  var STORE_KEY = 'qazaqApp_v1';
+  function blankSkillStats(){
+    return {
+      vocab:{c:0,t:0}, writing:{c:0,t:0}, listening:{c:0,t:0},
+      grammar:{c:0,t:0}, speaking:{c:0,t:0,sumPct:0,attempts:0}
+    };
+  }
+  function loadProgress(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      if(raw){
+        var p = JSON.parse(raw);
+        if(!p.skillStats) p.skillStats = blankSkillStats();
+        if(!p.clientId) p.clientId = 'u' + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+        if(!p.displayName) p.displayName = 'Үйренуші' + Math.floor(1000+Math.random()*9000);
+        return p;
+      }
+    }catch(e){}
+    return {
+      completed:{}, xp:0, streak:0, lastActive:null,
+      skillStats: blankSkillStats(),
+      clientId: 'u' + Math.random().toString(36).slice(2,10) + Date.now().toString(36),
+      displayName: 'Үйренуші' + Math.floor(1000+Math.random()*9000)
+    };
+  }
+  function saveProgress(p){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }catch(e){}
+  }
+  var progress = loadProgress();
+
+  function recordSkill(skill, correct){
+    var s = progress.skillStats[skill];
+    if(!s) return;
+    s.t++; if(correct) s.c++;
+    saveProgress(progress);
+  }
+  function recordSpeaking(pct){
+    var s = progress.skillStats.speaking;
+    s.attempts++; s.sumPct += pct; s.t++;
+    if(pct>=65) s.c++;
+    saveProgress(progress);
+  }
+  function skillPct(skill){
+    var s = progress.skillStats[skill];
+    if(!s || !s.t) return null;
+    return Math.round((s.c/s.t)*100);
+  }
+  function speakingAvgPct(){
+    var s = progress.skillStats.speaking;
+    if(!s || !s.attempts) return null;
+    return Math.round(s.sumPct/s.attempts);
+  }
+  function overallMasteryPct(){
+    var skills = ['vocab','writing','listening','grammar','speaking'];
+    var sum=0, n=0;
+    skills.forEach(function(k){ var p = skillPct(k); if(p!==null){ sum+=p; n++; } });
+    return n ? Math.round(sum/n) : 0;
+  }
+
+  function todayStr(){ return new Date().toISOString().slice(0,10); }
+  function touchStreak(){
+    var today = todayStr();
+    if(progress.lastActive === today) return;
+    var y = new Date(); y.setDate(y.getDate()-1);
+    var yStr = y.toISOString().slice(0,10);
+    if(progress.lastActive === yStr){ progress.streak = (progress.streak||0) + 1; }
+    else { progress.streak = 1; }
+    progress.lastActive = today;
+    saveProgress(progress);
+  }
+
+  function levelUnitIds(level){ return level.units.map(function(u){return u.id;}); }
+  function levelDoneCount(level){
+    var n=0; levelUnitIds(level).forEach(function(id){ if(progress.completed[id]) n++; });
+    return n;
+  }
+
+  /* ================= SPEECH ================= */
+  var kkVoice = null;
+  var voiceMode = 'none'; // 'native' (real kk voice) | 'turkic' (tr/az proxy, needs Latin transliteration) | 'cyrillic' (ru proxy, needs letter substitution) | 'none'
+
+  // Full Kazakh-Cyrillic -> Turkish/Azerbaijani-style Latin map. Turkish and Azerbaijani TTS
+  // engines can't read Cyrillic at all, but their phonology is much closer to Kazakh than
+  // Russian's for letters like ы/і/ө/ү/қ/ғ/ң — so we romanize before handing them the text.
+  var KAZ_TO_TURKIC = {
+    'а':'a','ә':'e','б':'b','в':'v','г':'g','ғ':'ğ','д':'d','е':'e','ё':'yo','ж':'j',
+    'з':'z','и':'i','й':'y','к':'k','қ':'k','л':'l','м':'m','н':'n','ң':'n','о':'o',
+    'ө':'ö','п':'p','р':'r','с':'s','т':'t','у':'u','ұ':'u','ү':'ü','ф':'f','х':'h',
+    'һ':'h','ц':'ts','ч':'ç','ш':'ş','щ':'ş','ъ':'','ы':'ı','і':'i','ь':'','э':'e',
+    'ю':'yu','я':'ya'
+  };
+  // Kazakh-specific letters that plain Russian voices either skip or mispronounce —
+  // swapped for the nearest Russian letter so at minimum the word is fully read aloud.
+  var KAZ_TO_RU_FRIENDLY = {
+    'ә':'а','ғ':'г','қ':'к','ң':'н','ө':'о','ұ':'у','ү':'у','һ':'х','і':'и'
+  };
+  function transliterate(text, map){
+    var out = '';
+    for(var i=0;i<text.length;i++){
+      var ch = text[i], lower = ch.toLowerCase();
+      if(Object.prototype.hasOwnProperty.call(map, lower)){
+        var rep = map[lower];
+        if(ch !== lower && rep.length){ rep = rep.charAt(0).toUpperCase() + rep.slice(1); }
+        out += rep;
+      } else {
+        out += ch;
+      }
+    }
+    return out;
+  }
+  function textForVoice(text){
+    if(voiceMode==='turkic') return transliterate(text, KAZ_TO_TURKIC);
+    if(voiceMode==='cyrillic') return transliterate(text, KAZ_TO_RU_FRIENDLY);
+    return text;
+  }
+
+  function pickVoice(){
+    if(!('speechSynthesis' in window)) return;
+    var voices = window.speechSynthesis.getVoices();
+    var find = function(re){ return voices.find(function(v){ return re.test(v.lang); }); };
+    var v;
+    if((v = find(/^kk/i))){ kkVoice = v; voiceMode = 'native'; return; }
+    if((v = find(/^tr/i))){ kkVoice = v; voiceMode = 'turkic'; return; }
+    if((v = find(/^az/i))){ kkVoice = v; voiceMode = 'turkic'; return; }
+    if((v = find(/^ru/i))){ kkVoice = v; voiceMode = 'cyrillic'; return; }
+    kkVoice = null; voiceMode = 'none';
+  }
+  if('speechSynthesis' in window){
+    pickVoice();
+    window.speechSynthesis.onvoiceschanged = pickVoice;
+  }
+  function speak(text, opts){
+    if(!('speechSynthesis' in window)){ if(opts && opts.onend) opts.onend(); return; }
+    try{
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(textForVoice(text));
+      u.lang = kkVoice ? kkVoice.lang : 'kk-KZ';
+      if(kkVoice) u.voice = kkVoice;
+      u.rate = 0.85;
+      u.pitch = 1;
+      if(opts && opts.onstart) u.onstart = opts.onstart;
+      if(opts && opts.onend) { u.onend = opts.onend; u.onerror = opts.onend; }
+      window.speechSynthesis.speak(u);
+      // some browsers never fire onstart for short utterances — fire it right away as a safe default
+      if(opts && opts.onstart) opts.onstart();
+    }catch(e){ if(opts && opts.onend) opts.onend(); }
+  }
+
+  var Recognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  function normalize(s){
+    return String(s).toLowerCase().replace(/[!?.,«»"']/g,'').trim().replace(/\s+/g,' ');
+  }
+  function similar(a,b){
+    a=normalize(a); b=normalize(b);
+    if(a===b) return true;
+    if(a.length>3 && (b.indexOf(a)>=0 || a.indexOf(b)>=0)) return true;
+    return false;
+  }
+  function levenshtein(a,b){
+    var m=a.length, n=b.length;
+    if(!m) return n; if(!n) return m;
+    var row = new Array(n+1);
+    for(var j=0;j<=n;j++) row[j]=j;
+    for(var i=1;i<=m;i++){
+      var prev = row[0]; row[0]=i;
+      for(var j2=1;j2<=n;j2++){
+        var tmp = row[j2];
+        row[j2] = a[i-1]===b[j2-1] ? prev : 1 + Math.min(prev, row[j2], row[j2-1]);
+        prev = tmp;
+      }
+    }
+    return row[n];
+  }
+  /** Pronunciation-accuracy score 0-100 between recognized speech and target phrase. */
+  function speechAccuracyPct(said, target){
+    var a = normalize(said), b = normalize(target);
+    if(!a.length || !b.length) return 0;
+    var dist = levenshtein(a,b);
+    var maxLen = Math.max(a.length, b.length);
+    var pct = Math.round((1 - dist/maxLen) * 100);
+    return Math.max(0, Math.min(100, pct));
+  }
+
+  /* ================= NAV / RENDER ================= */
+  var app = document.getElementById('app');
+  var view = { screen:'home' };
+  var session = null;
+
+  function go(screen, extra){
+    view = Object.assign({screen:screen}, extra||{});
+    render();
+    window.scrollTo(0,0);
+  }
+
+  function render(){
+    stopLeaderboard();
+    if(view.screen==='home') return renderHome();
+    if(view.screen==='level') return renderLevelScreen();
+    if(view.screen==='exercise') return renderExercise();
+    if(view.screen==='result') return renderResult();
+    if(view.screen==='progress') return renderProgressScreen();
+    if(view.screen==='leaderboard') return renderLeaderboardScreen();
+  }
+
+  function motifSVG(){
+    return '<svg class="motif" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">' +
+      '<g fill="none" stroke="white" stroke-width="2">' +
+      '<circle cx="40" cy="40" r="18"/><circle cx="40" cy="40" r="9"/>' +
+      '<circle cx="360" cy="150" r="26"/><circle cx="360" cy="150" r="13"/>' +
+      '<path d="M120 20 Q140 0 160 20 Q140 40 120 20Z"/>' +
+      '<path d="M260 170 Q280 150 300 170 Q280 190 260 170Z"/>' +
+      '<path d="M0 110 Q20 90 40 110 Q20 130 0 110Z"/>' +
+      '</g></svg>';
+  }
+
+  function renderHome(){
+    var totalUnits = 0, doneUnits = 0;
+    LEVELS.forEach(function(lv){ lv.units.forEach(function(u){ totalUnits++; if(progress.completed[u.id]) doneUnits++; }); });
+
+    var html = '';
+    html += '<div class="horizon">' + motifSVG() +
+      '<div class="horizon-top">' +
+        '<div class="brand"><div class="brand-mark">Q</div><div class="brand-name">Qazaqsha</div></div>' +
+        '<div class="stats-row">' +
+          '<div class="stat-pill">' + iconSm('flame') + (progress.streak||0) + '</div>' +
+          '<div class="stat-pill">' + iconSm('star') + (progress.xp||0) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<h1 class="hero-title serif">Қазақ тілін үйренейік</h1>' +
+      '<p class="hero-sub">Изучайте казахский язык: слова, грамматика, аудирование и разговорная речь — на любом уровне, с которого вам удобно начать.</p>' +
+      '<div class="wave"></div>' +
+    '</div>';
+
+    html += '<div class="section"><div class="section-title">Выберите уровень</div>';
+    html += '<div class="path">';
+    LEVELS.forEach(function(lv, i){
+      var done = levelDoneCount(lv), total = lv.units.length;
+      var pct = total ? Math.round(done/total*100) : 0;
+      html += '<div class="level-node">' +
+        '<div class="node-col">' +
+          '<div class="stem-seg" ' + (i===0?'style="visibility:hidden"':'') + '></div>' +
+          '<div class="badge" style="background:var(--'+lv.color+');" onclick="QZ.openLevel(\''+lv.id+'\')">' + esc(lv.code) + '</div>' +
+          '<div class="stem-seg" ' + (i===LEVELS.length-1?'style="visibility:hidden"':'') + '></div>' +
+        '</div>' +
+        '<div class="level-card" onclick="QZ.openLevel(\''+lv.id+'\')">' +
+          '<div class="lv-name serif">' + esc(lv.name) + '</div>' +
+          '<div class="lv-sub">' + esc(lv.sub) + ' · ' + total + ' урок' + (total===1?'':(total<5?'а':'ов')) + '</div>' +
+          '<div class="lv-progress"><div style="width:'+pct+'%;background:var(--'+lv.color+');"></div></div>' +
+        '</div>' +
+      '</div>';
+    });
+    html += '</div></div>';
+
+    html += '<div class="nav-row">' +
+      '<div class="nav-btn" onclick="QZ.openProgress()">' + ICONS.trophy + ' Прогресс</div>' +
+      '<div class="nav-btn" onclick="QZ.openLeaderboard()">' + iconSmInline('star') + ' Рейтинг</div>' +
+    '</div>';
+
+    html += '<div class="section" style="padding-top:6px;color:var(--ink-soft);font-size:12.5px;text-align:center;">' +
+      doneUnits + ' из ' + totalUnits + ' уроков пройдено · прогресс сохраняется в этом браузере' +
+    '</div>';
+
+    app.innerHTML = html;
+  }
+  function iconSmInline(name){ return ICONS[name]; }
+
+  function iconSm(name){ return '<span style="display:inline-flex;width:15px;height:15px;">' + ICONS[name] + '</span>'; }
+
+  function renderLevelScreen(){
+    var lv = LEVELS.find(function(l){return l.id===view.levelId;});
+    var html = '';
+    html += '<div class="back-row">' +
+      '<div class="icon-btn" onclick="QZ.goHome()">' + ICONS.back + '</div>' +
+      '<div><div class="level-head-title serif">' + esc(lv.name) + '</div><div class="level-head-sub">' + esc(lv.sub) + '</div></div>' +
+    '</div>';
+    html += '<div class="section">';
+    lv.units.forEach(function(u){
+      var done = !!progress.completed[u.id];
+      html += '<div class="unit-card" onclick="QZ.startUnit(\''+lv.id+'\',\''+u.id+'\')">' +
+        '<div class="unit-icon" style="background:rgba(0,0,0,.05);color:var(--'+lv.colorDeep+');">' + ICONS[u.icon] + '</div>' +
+        '<div><div class="unit-title">' + esc(u.title) + '</div><div class="unit-meta">' + esc(u.ru) + ' · ' + u.exercises.length + ' заданий</div></div>' +
+        (done ? '<div class="unit-check">' + ICONS.check + '</div>' : '') +
+      '</div>';
+    });
+    html += '</div>';
+    app.innerHTML = html;
+  }
+
+  /* ================= PROGRESS / ASSESSMENT ================= */
+  var SKILL_ORDER = ['vocab','writing','listening','grammar','speaking'];
+  var SKILL_COLOR = { vocab:'var(--sky)', writing:'var(--a2)', listening:'var(--b1)', grammar:'var(--b2)', speaking:'var(--gold)' };
+
+  function renderProgressScreen(){
+    var overall = overallMasteryPct();
+    var totalUnits = 0, doneUnits = 0;
+    LEVELS.forEach(function(lv){ lv.units.forEach(function(u){ totalUnits++; if(progress.completed[u.id]) doneUnits++; }); });
+
+    var html = '<div class="back-row">' +
+      '<div class="icon-btn" onclick="QZ.goHome()">' + ICONS.back + '</div>' +
+      '<div><div class="level-head-title serif">Ваш прогресс</div><div class="level-head-sub">Оценка понимания и владения языком</div></div>' +
+    '</div>';
+
+    html += '<div class="mastery-hero">' +
+      '<div class="mastery-ring" style="--pct:'+overall+'"><span class="num">'+overall+'%</span></div>' +
+      '<div style="font-weight:700;font-size:15px;">Общее владение языком</div>' +
+      '<div style="font-size:12.5px;color:var(--ink-soft);margin-top:2px;">' + doneUnits + ' из ' + totalUnits + ' уроков · ' + (progress.xp||0) + ' очков опыта · серия ' + (progress.streak||0) + ' дн.</div>' +
+    '</div>';
+
+    html += '<div class="section"><div class="section-title">Навыки</div>';
+    SKILL_ORDER.forEach(function(skill){
+      var pct = skill==='speaking' ? speakingAvgPct() : skillPct(skill);
+      var attempted = skill==='speaking' ? progress.skillStats.speaking.attempts : progress.skillStats[skill].t;
+      html += '<div class="skill-bar-row">' +
+        '<div class="skill-bar-top"><span>' + iconSmSkill(skill) + ' ' + SKILL_LABEL[skill] + '</span><span class="pct">' + (pct===null?'—':pct+'%') + '</span></div>' +
+        '<div class="skill-bar-track"><div class="skill-bar-fill" style="width:'+(pct||0)+'%;background:'+SKILL_COLOR[skill]+';"></div></div>' +
+        (attempted ? '' : '<div class="skill-bar-empty">Ещё нет данных — пройдите несколько заданий</div>') +
+      '</div>';
+    });
+    html += '</div>';
+
+    html += '<div class="section" style="padding-top:0;">' +
+      '<div class="info-card">Оценка складывается из доли правильных ответов по каждому навыку. Говорение оценивается по совпадению произнесённой фразы с эталоном (через распознавание речи браузера) — балл усредняется по всем попыткам.</div>' +
+    '</div>';
+
+    app.innerHTML = html;
+  }
+
+  /* ================= LEADERBOARD (shared, via db capability) ================= */
+  var lbUnsub = null;
+  function stopLeaderboard(){
+    if(lbUnsub){ try{ lbUnsub(); }catch(e){} lbUnsub = null; }
+  }
+
+  function renderLeaderboardScreen(){
+    var html = '<div class="back-row">' +
+      '<div class="icon-btn" onclick="QZ.goHome()">' + ICONS.back + '</div>' +
+      '<div><div class="level-head-title serif">Рейтинг</div><div class="level-head-sub">Общий зачёт по очкам опыта</div></div>' +
+    '</div>';
+
+    html += '<div class="section">';
+    html += '<div class="lb-name-card"><label>Ваше имя в рейтинге</label><div class="lb-name-row">' +
+      '<input id="lbNameInput" type="text" maxlength="24" value="'+esc(progress.displayName)+'">' +
+      '<button onclick="QZ.saveName()">Сохранить</button>' +
+    '</div></div>';
+    html += '<div id="lbList"><div class="lb-empty">Загрузка рейтинга…</div></div>';
+    html += '<div class="info-card">Рейтинг общий для всех, кто открывает эту ссылку в вашей организации Claude — то есть с одним и тем же аккаунтом или в рамках общего рабочего пространства. Это не открытый публичный рейтинг на весь интернет.</div>';
+    html += '</div>';
+
+    app.innerHTML = html;
+    initLeaderboard();
+  }
+
+  function renderLbRows(rows){
+    var el = document.getElementById('lbList');
+    if(!el) return;
+    if(!rows.length){ el.innerHTML = '<div class="lb-empty">Пока никого нет в рейтинге — станьте первым!</div>'; return; }
+    var html = '';
+    rows.forEach(function(r, i){
+      var mine = r.id === progress.clientId;
+      html += '<div class="lb-row'+(mine?' me':'')+'">' +
+        '<div class="lb-rank">'+(i+1)+'</div>' +
+        '<div class="lb-name">'+esc(r.name||'Үйренуші')+(mine?' (вы)':'')+'</div>' +
+        '<div class="lb-xp">'+(r.xp||0)+' XP</div>' +
+      '</div>';
+    });
+    el.innerHTML = html;
+  }
+
+  function useDb(){
+    if(typeof window.claude === 'undefined' || !window.claude.use) return Promise.resolve(null);
+    return window.claude.use('db');
+  }
+
+  function initLeaderboard(){
+    useDb().then(function(db){
+      if(!db){
+        var el = document.getElementById('lbList');
+        if(el) el.innerHTML = '<div class="lb-empty">Рейтинг недоступен в этом окружении</div>';
+        return;
+      }
+      // upsert my current score
+      db.collection('leaderboard').doc(progress.clientId).set({
+        name: progress.displayName, xp: progress.xp||0, streak: progress.streak||0, updatedAt: Date.now()
+      }).catch(function(){});
+
+      var q = db.collection('leaderboard').orderBy('xp','desc').limit(50);
+      lbUnsub = q.onSnapshot(function(snap){
+        var rows = snap.docs.map(function(d){ var v = d.data()||{}; return {id:d.id, name:v.name, xp:v.xp}; });
+        renderLbRows(rows);
+      }, function(err){
+        var el = document.getElementById('lbList');
+        if(el) el.innerHTML = '<div class="lb-empty">Не удалось загрузить рейтинг</div>';
+      });
+    }).catch(function(){
+      var el = document.getElementById('lbList');
+      if(el) el.innerHTML = '<div class="lb-empty">Рейтинг недоступен в этом окружении</div>';
+    });
+  }
+
+  function syncLeaderboardScore(){
+    useDb().then(function(db){
+      if(!db) return;
+      db.collection('leaderboard').doc(progress.clientId).set({
+        name: progress.displayName, xp: progress.xp||0, streak: progress.streak||0, updatedAt: Date.now()
+      }).catch(function(){});
+    }).catch(function(){});
+  }
+
+  /* ================= EXERCISE SESSION ================= */
+  function startUnit(levelId, unitId){
+    var lv = LEVELS.find(function(l){return l.id===levelId;});
+    var unit = lv.units.find(function(u){return u.id===unitId;});
+    session = {
+      levelId:levelId, unitId:unitId, level:lv, unit:unit,
+      idx:0, hearts:5, correct:0, xp:0,
+      answered:false
+    };
+    go('exercise');
+  }
+
+  function renderExercise(){
+    var s = session;
+    var ex = s.unit.exercises[s.idx];
+    var pct = Math.round(s.idx / s.unit.exercises.length * 100);
+
+    var html = '';
+    html += '<div class="ex-top">' +
+      '<div class="icon-btn" onclick="QZ.exitSession()">' + ICONS.close + '</div>' +
+      '<div class="ex-progress"><div style="width:'+pct+'%"></div></div>' +
+      '<div class="hearts">';
+    for(var i=0;i<5;i++){ html += '<span style="color:' + (i<s.hearts?'var(--bad)':'var(--line)') + '">' + ICONS.heart + '</span>'; }
+    html += '</div></div>';
+
+    html += '<div class="ex-wrap" id="exBody">';
+    html += renderExerciseBody(ex);
+    html += '</div>';
+
+    html += '<div class="footer-bar" id="footerBar"><button class="btn" id="mainBtn" disabled onclick="QZ.onMainBtn()">Проверить</button></div>';
+
+    app.innerHTML = html;
+    wireExerciseInteractions(ex);
+  }
+
+  function mascotSVG(){
+    return '' +
+    '<svg viewBox="0 0 140 144" class="mascot-svg">' +
+      '<defs>' +
+        '<radialGradient id="mcSkinGrad" cx="35%" cy="28%" r="80%">' +
+          '<stop offset="0%" stop-color="#FBDCB3"/><stop offset="100%" stop-color="#E5A971"/>' +
+        '</radialGradient>' +
+        '<linearGradient id="mcHairGrad" x1="20%" y1="0%" x2="85%" y2="100%">' +
+          '<stop offset="0%" stop-color="#4A362B"/><stop offset="100%" stop-color="#241813"/>' +
+        '</linearGradient>' +
+        '<linearGradient id="mcShirtGrad" x1="15%" y1="0%" x2="85%" y2="100%">' +
+          '<stop offset="0%" stop-color="#33C3DE"/><stop offset="100%" stop-color="#0E6E86"/>' +
+        '</linearGradient>' +
+      '</defs>' +
+      '<path class="arm arm-l" d="M46 100 Q18 94 14 68 Q30 78 48 92Z" fill="url(#mcShirtGrad)"/>' +
+      '<circle cx="15" cy="66" r="6.5" fill="url(#mcSkinGrad)"/>' +
+      '<path class="arm arm-r" d="M94 100 Q122 94 126 68 Q110 78 92 92Z" fill="url(#mcShirtGrad)"/>' +
+      '<circle cx="125" cy="66" r="6.5" fill="url(#mcSkinGrad)"/>' +
+      '<rect x="60" y="70" width="20" height="26" rx="6" fill="url(#mcSkinGrad)"/>' +
+      '<ellipse cx="70" cy="94" rx="4" ry="8" fill="#00000022"/>' +
+      '<ellipse cx="70" cy="118" rx="34" ry="25" fill="url(#mcShirtGrad)"/>' +
+      '<path d="M48 100 Q70 111 92 100" class="mc-collar-seam"/>' +
+      '<path d="M46 103 Q70 114 94 103" class="mc-collar-trim"/>' +
+      '<ellipse cx="44" cy="52" rx="4.5" ry="6.5" fill="url(#mcSkinGrad)"/>' +
+      '<ellipse cx="96" cy="52" rx="4.5" ry="6.5" fill="url(#mcSkinGrad)"/>' +
+      '<circle cx="70" cy="49" r="25" fill="url(#mcSkinGrad)"/>' +
+      '<path d="M42 44 Q39 13 70 11 Q101 13 98 44 Q94 22 70 20 Q46 22 42 44Z" fill="url(#mcHairGrad)"/>' +
+      '<rect x="45" y="28" width="50" height="7" rx="3.5" class="mc-band"/>' +
+      '<circle cx="70" cy="31.5" r="3" class="mc-band-dot"/>' +
+      '<g class="eyes eyes-normal">' +
+        '<path d="M49 40 Q57 35 66 39" class="mc-brow"/><path d="M74 39 Q83 35 91 40" class="mc-brow"/>' +
+        '<circle cx="58" cy="50" r="7.5" fill="#fff"/><circle cx="82" cy="50" r="7.5" fill="#fff"/>' +
+        '<circle cx="60" cy="51" r="3.6" class="mc-pupil"/><circle cx="84" cy="51" r="3.6" class="mc-pupil"/>' +
+      '</g>' +
+      '<g class="eyes eyes-happy">' +
+        '<path d="M49 36 Q57 30 66 34" class="mc-brow"/><path d="M74 34 Q83 30 91 36" class="mc-brow"/>' +
+        '<path d="M50 51 Q58 41 65 51" class="mc-line"/><path d="M75 51 Q82 41 89 51" class="mc-line"/>' +
+      '</g>' +
+      '<g class="eyes eyes-sad">' +
+        '<path d="M49 42 Q57 46 66 43" class="mc-brow"/><path d="M74 43 Q83 46 91 42" class="mc-brow"/>' +
+        '<circle cx="58" cy="53" r="7.5" fill="#fff"/><circle cx="82" cy="53" r="7.5" fill="#fff"/>' +
+        '<circle cx="59" cy="56" r="3.6" class="mc-pupil"/><circle cx="83" cy="56" r="3.6" class="mc-pupil"/>' +
+      '</g>' +
+      '<path d="M68 57 Q65 64 68 67" class="mc-nose"/>' +
+      '<path d="M61 73 Q70 77 79 73" class="mc-mouth-closed"/>' +
+      '<ellipse cx="70" cy="74" rx="6.5" ry="5.5" class="mc-mouth-open"/>' +
+      '<circle cx="45" cy="63" r="5.5" class="mc-cheek"/><circle cx="95" cy="63" r="5.5" class="mc-cheek"/>' +
+      '<g class="soundwave"><rect x="105" y="45" width="4" height="12" rx="2"/><rect x="113" y="39" width="4" height="24" rx="2"/><rect x="121" y="47" width="4" height="8" rx="2"/></g>' +
+    '</svg>';
+  }
+
+  function renderExerciseBody(ex){
+    var h = '<div class="skill-tag">' + iconSmSkill(ex.skill) + SKILL_LABEL[ex.skill] + '</div>';
+
+    if(ex.type==='choice'){
+      h += '<p class="ex-prompt">' + esc(ex.prompt) + '</p>';
+      h += '<div class="options">';
+      ex.options.forEach(function(o,i){
+        h += '<button class="opt" data-val="'+esc(o)+'" onclick="QZ.selectOption(this)">' + esc(o) + '</button>';
+      });
+      h += '</div>';
+    }
+    else if(ex.type==='fill'){
+      h += '<p class="ex-prompt">Дополните предложение</p>';
+      h += '<div class="sentence-box">' + esc(ex.sentence).replace('___','<span class="blank">?</span>').replace(/\n/g,'<br>') + '</div>';
+      h += '<div class="options">';
+      ex.options.forEach(function(o){
+        h += '<button class="opt" data-val="'+esc(o)+'" onclick="QZ.selectOption(this)">' + esc(o) + '</button>';
+      });
+      h += '</div>';
+    }
+    else if(ex.type==='listen'){
+      h += '<p class="ex-prompt">' + esc(ex.prompt) + '</p>';
+      h += '<div class="mascot-wrap" id="mascot">' + mascotSVG() + '<div class="mascot-bubble" id="mascotBubble">Тыңдауға дайынмын!</div></div>';
+      h += '<button class="listen-btn" onclick="QZ.playAudio()">' + ICONS.speaker + '<span>Прослушать</span></button>';
+      h += '<div class="options">';
+      ex.options.forEach(function(o){
+        h += '<button class="opt" data-val="'+esc(o)+'" onclick="QZ.selectOption(this)">' + esc(o) + '</button>';
+      });
+      h += '</div>';
+    }
+    else if(ex.type==='translate'){
+      h += '<p class="ex-prompt">' + esc(ex.prompt) + '</p>';
+      h += '<p class="ex-caption">Введите слово на казахском языке</p>';
+      h += '<input class="text-input" id="txtInput" type="text" autocomplete="off" placeholder="Ваш ответ..." oninput="QZ.onTextInput(this.value)">';
+    }
+    else if(ex.type==='speak'){
+      h += '<p class="ex-prompt">Повторите вслух</p>';
+      h += '<div class="speak-card">' +
+        '<p class="speak-target serif">' + esc(ex.target) + '</p>' +
+        '<p class="speak-hint">' + esc(ex.hint) + '</p>' +
+        '<button class="mic-btn" id="micBtn" onclick="QZ.toggleMic()">' + ICONS.mic + '</button>' +
+        '<div class="speak-status" id="speakStatus">Нажмите на динамик, затем повторите фразу</div>' +
+        '<div id="speakScore"></div>' +
+        '<button class="small-btn" onclick="QZ.playTarget()">' + ICONS.speaker.replace('width="24" height="24"','') + ' Прослушать произношение</button>' +
+      '</div>';
+    }
+    return h;
+  }
+
+  function iconSmSkill(skill){
+    var map = {vocab:'book', writing:'pencil', listening:'ear', grammar:'pencil', speaking:'mic'};
+    return '<span style="display:inline-flex;width:13px;height:13px;">' + ICONS[map[skill]] + '</span>';
+  }
+
+  var pendingAnswer = null;
+
+  function wireExerciseInteractions(ex){
+    pendingAnswer = null;
+    if(ex.type==='speak'){
+      // speaking exercises are self-paced; main button becomes "Continue" immediately available after trying
+      document.getElementById('mainBtn').disabled = false;
+      document.getElementById('mainBtn').textContent = 'Продолжить';
+      session.speakTried = false;
+    }
+  }
+
+  window.QZ = {};
+
+  QZ.selectOption = function(btn){
+    if(session.answered) return;
+    var opts = btn.parentElement.querySelectorAll('.opt');
+    opts.forEach(function(o){ o.classList.remove('selected'); });
+    btn.classList.add('selected');
+    pendingAnswer = btn.getAttribute('data-val');
+    document.getElementById('mainBtn').disabled = false;
+  };
+
+  QZ.onTextInput = function(val){
+    pendingAnswer = val;
+    document.getElementById('mainBtn').disabled = !val.trim();
+  };
+
+  QZ.playAudio = function(){
+    var ex = session.unit.exercises[session.idx];
+    var mascot = document.getElementById('mascot');
+    var bubble = document.getElementById('mascotBubble');
+    if(mascot) mascot.classList.add('talking');
+    if(bubble) bubble.textContent = '…';
+    if(mascot && mascot._talkTimeout) clearTimeout(mascot._talkTimeout);
+    var stopTalking = function(){
+      if(mascot) mascot.classList.remove('talking');
+      if(bubble) bubble.textContent = 'Тыңдауға дайынмын!';
+    };
+    speak(ex.audioText, {
+      onend: stopTalking
+    });
+    // safety fallback in case the browser never fires onend for a short utterance
+    if(mascot) mascot._talkTimeout = setTimeout(stopTalking, 2600);
+  };
+  QZ.playTarget = function(){
+    var ex = session.unit.exercises[session.idx];
+    speak(ex.target);
+  };
+
+  QZ.toggleMic = function(){
+    var ex = session.unit.exercises[session.idx];
+    var micBtn = document.getElementById('micBtn');
+    var status = document.getElementById('speakStatus');
+    var scoreEl = document.getElementById('speakScore');
+    if(!Recognition){
+      status.textContent = 'Распознавание речи недоступно в этом браузере — просто потренируйтесь вслух';
+      session.speakTried = true;
+      return;
+    }
+    if(session._rec){ session._rec.stop(); return; }
+    try{
+      var rec = new Recognition();
+      rec.lang = 'kk-KZ';
+      rec.interimResults = false;
+      rec.maxAlternatives = 3;
+      micBtn.classList.add('listening');
+      status.textContent = 'Слушаю...';
+      if(scoreEl) scoreEl.innerHTML = '';
+      rec.onresult = function(e){
+        var said = e.results[0][0].transcript;
+        session.speakTried = true;
+        var best = 0;
+        for(var i=0;i<e.results[0].length;i++){
+          var pct = speechAccuracyPct(e.results[0][i].transcript, ex.target);
+          if(pct>best) best = pct;
+        }
+        recordSpeaking(best);
+        if(best>=80){ status.textContent = 'Отлично! Похоже на «' + ex.target + '»'; status.style.color = 'var(--good)'; }
+        else if(best>=50){ status.textContent = 'Неплохо! Вы сказали: «' + said + '»'; status.style.color = 'var(--gold-deep)'; }
+        else { status.textContent = 'Вы сказали: «' + said + '». Попробуйте ещё раз.'; status.style.color = 'var(--ink-soft)'; }
+        if(scoreEl){
+          var barColor = best>=80?'var(--good)':(best>=50?'var(--gold)':'var(--bad)');
+          scoreEl.innerHTML = '<div class="acc-row"><div class="acc-track"><div class="acc-fill" style="width:'+best+'%;background:'+barColor+';"></div></div><span class="acc-num">'+best+'%</span></div>';
+        }
+      };
+      rec.onerror = function(){
+        status.textContent = 'Не удалось распознать речь — попробуйте ещё раз или продолжайте';
+        session.speakTried = true;
+      };
+      rec.onend = function(){ micBtn.classList.remove('listening'); session._rec = null; };
+      session._rec = rec;
+      rec.start();
+    }catch(e){
+      status.textContent = 'Распознавание речи недоступно — просто потренируйтесь вслух';
+      session.speakTried = true;
+    }
+  };
+
+  QZ.onMainBtn = function(){
+    var ex = session.unit.exercises[session.idx];
+    if(ex.type==='speak'){
+      advanceExercise(true);
+      return;
+    }
+    if(!session.answered){
+      judgeAnswer(ex);
+    } else {
+      advanceExercise(session.lastCorrect);
+    }
+  };
+
+  function updateHeartsDisplay(){
+    var el = document.querySelector('.hearts');
+    if(!el) return;
+    var html = '';
+    for(var i=0;i<5;i++){ html += '<span style="color:' + (i<session.hearts?'var(--bad)':'var(--line)') + '">' + ICONS.heart + '</span>'; }
+    el.innerHTML = html;
+  }
+
+  function judgeAnswer(ex){
+    var correct = false;
+    if(ex.type==='translate'){
+      correct = normalize(pendingAnswer) === normalize(ex.answer);
+    } else {
+      correct = pendingAnswer === ex.answer;
+    }
+    session.answered = true;
+    session.lastCorrect = correct;
+    recordSkill(ex.skill, correct);
+
+    if(ex.type==='listen'){
+      var mascot = document.getElementById('mascot');
+      var bubble = document.getElementById('mascotBubble');
+      if(mascot){
+        mascot.classList.remove('talking');
+        mascot.classList.add(correct ? 'happy' : 'sad');
+      }
+      if(bubble){
+        var goodLines = ['Жарайсың!','Керемет!','Дәл солай!'];
+        var badLines = ['Қайталап көрейік!','Ештеңе етпейді!','Келесіде шығады!'];
+        var lines = correct ? goodLines : badLines;
+        bubble.textContent = lines[Math.floor(Math.random()*lines.length)];
+      }
+    }
+
+    // visual feedback on options
+    if(ex.type!=='translate'){
+      var opts = document.querySelectorAll('.opt');
+      opts.forEach(function(o){
+        o.setAttribute('disabled','disabled');
+        if(o.getAttribute('data-val')===ex.answer) o.classList.add('correct');
+        else if(o.classList.contains('selected') && !correct) o.classList.add('wrong');
+      });
+    } else {
+      document.getElementById('txtInput').setAttribute('disabled','disabled');
+    }
+
+    var bar = document.getElementById('footerBar');
+    var extra = ex.translation ? '<div class="feedback-note">' + esc(ex.translation) + '</div>' : '';
+    if(correct){
+      session.correct++; session.xp += 10; progress.xp = (progress.xp||0) + 10; saveProgress(progress);
+      bar.className = 'footer-bar state-good';
+      bar.innerHTML = '<div class="feedback-row good">' + ICONS.check.replace('width="24" height="24"','width="20" height="20"') + ' Правильно!</div>' + extra +
+        '<button class="btn good" onclick="QZ.onMainBtn()">Продолжить</button>';
+    } else {
+      session.hearts = Math.max(0, session.hearts-1);
+      updateHeartsDisplay();
+      bar.className = 'footer-bar state-bad';
+      var correctText = ex.answer ? ('Правильный ответ: ' + ex.answer) : '';
+      bar.innerHTML = '<div class="feedback-row bad">' + ICONS.close.replace('width="24" height="24"','width="20" height="20"') + ' Неверно</div>' +
+        '<div class="feedback-note">' + esc(correctText) + '</div>' + extra +
+        '<button class="btn bad" onclick="QZ.onMainBtn()">Продолжить</button>';
+    }
+  }
+
+  function advanceExercise(wasCorrect){
+    if(session.hearts<=0){
+      finishSession(false);
+      return;
+    }
+    session.idx++;
+    session.answered = false;
+    if(session.idx >= session.unit.exercises.length){
+      finishSession(true);
+    } else {
+      renderExercise();
+    }
+  }
+
+  QZ.exitSession = function(){
+    session = null;
+    go('level', {levelId: view.levelId});
+  };
+
+  function finishSession(completedAll){
+    var s = session;
+    var firstTime = !progress.completed[s.unit.id];
+    if(completedAll && s.hearts>0 && firstTime){
+      progress.completed[s.unit.id] = true;
+      progress.xp = (progress.xp||0) + 20;
+      s.xp += 20;
+      touchStreak();
+      saveProgress(progress);
+    } else if(completedAll && s.hearts>0){
+      touchStreak();
+      saveProgress(progress);
+    }
+    syncLeaderboardScore();
+    go('result', { outcome: (completedAll && s.hearts>0) ? 'done' : 'out-of-hearts', earnedXP: s.xp, correct: s.correct, total: s.unit.exercises.length, levelId: s.levelId });
+  }
+
+  function renderResult(){
+    var success = view.outcome==='done';
+    var html = '<div class="result-wrap">';
+    html += '<div class="result-badge">' + (success ? ICONS.trophy.replace('width="24" height="24"','width="46" height="46"') : ICONS.heartOutline.replace(/width="24" height="24"/,'width="46" height="46"')) + '</div>';
+    html += '<h2 class="result-title serif">' + (success ? 'Керемет! Урок пройден' : 'Сердечки закончились') + '</h2>';
+    html += '<p class="result-sub">' + (success ? 'Вы завершили урок — так держать!' : 'Ничего страшного, попробуйте урок ещё раз') + '</p>';
+    html += '<div class="result-stats">' +
+      '<div class="stat-box"><div class="num">+' + view.earnedXP + '</div><div class="lbl">Очки опыта</div></div>' +
+      '<div class="stat-box"><div class="num">' + view.correct + '/' + view.total + '</div><div class="lbl">Правильных</div></div>' +
+    '</div>';
+    html += '<button class="btn primary" onclick="QZ.backToLevel()">Продолжить</button>';
+    app.innerHTML = html;
+  }
+
+  QZ.backToLevel = function(){
+    var levelId = view.levelId;
+    session = null;
+    go('level', {levelId: levelId});
+  };
+
+  QZ.openLevel = function(id){ go('level', {levelId:id}); };
+  QZ.goHome = function(){ go('home'); };
+  QZ.startUnit = function(levelId, unitId){ startUnit(levelId, unitId); };
+  QZ.openProgress = function(){ go('progress'); };
+  QZ.openLeaderboard = function(){ go('leaderboard'); };
+  QZ.saveName = function(){
+    var input = document.getElementById('lbNameInput');
+    var val = (input && input.value || '').trim().slice(0,24);
+    if(!val) return;
+    progress.displayName = val;
+    saveProgress(progress);
+    syncLeaderboardScore();
+  };
+
+  /* ================= INIT ================= */
+  render();
+})();
+</script>
+</body>
+</html>
